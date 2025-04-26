@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     working_dir: /var/www/app
     volumes:
-      - ./symfony-backend/app:/var/www/app
+      - ./symfony-backend:/var/www/app
     depends_on:
       db:
         condition: service_healthy
