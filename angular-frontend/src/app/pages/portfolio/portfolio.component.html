@@ -1,0 +1,12 @@
+<section class="min-h-screen bg-azulmarino text-white p-10 font-romano">
+  <h2 class="text-4xl text-ocre mb-10 text-center">Portfolio</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div *ngFor="let img of [1,2,3,4,5,6]" class="relative group">
+      <img src="assets/portfolio/{{img}}.jpg" alt="Tatuaje {{img}}" class="w-full h-72 object-cover rounded-lg shadow-lg group-hover:scale-105 transition-transform duration-300" />
+      <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-ocre text-lg transition-opacity">
+        Detalle {{img}}
+      </div>
+    </div>
+  </div>
+</section>

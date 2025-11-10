@@ -1,0 +1,17 @@
+<!-- Hero con video de fondo -->
+<section id="inicio" class="relative h-screen flex items-center justify-center font-romano">
+  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover brightness-50">
+    <source src="assets/video-bg.mp4" type="video/mp4" />
+  </video>
+  <div class="absolute inset-0 bg-azulmarino/40"></div>
+
+  <div class="relative z-10 text-center">
+    <img src="assets/logo.png" alt="Logo Romano Tattoo"
+      class="mx-auto w-40 md:w-56 animate-fadeIn drop-shadow-[0_0_10px_rgba(184,137,0,0.7)]">
+    <h2 class="text-ocre text-xl md:text-2xl mt-6">Tatuajes que cuentan tu historia</h2>
+    <a routerLink="/reservas"
+      class="inline-block mt-8 px-6 py-3 border-2 border-ocre text-ocre font-semibold uppercase tracking-wider hover:bg-ocre hover:text-azulmarino transition-all duration-300">
+      Pide tu cita
+    </a>
+  </div>
+</section>

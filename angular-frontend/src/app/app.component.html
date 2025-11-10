@@ -1,7 +1,16 @@
-<h1 class="text-primary font-sans text-4xl">
-  ¡Tailwind personalizado funcionando!
-</h1>
+<nav class="font-cinzel fixed top-0 left-0 w-full bg-azulmarino/80 backdrop-blur-sm z-50 shadow-md">
+  <div class="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
+    <h1 class="text-ocre text-2xl font-semibold">Eterna Aurea Tattoo Studio</h1>
+    <ul class="flex space-x-6 text-sm uppercase tracking-wide">
+      <li><a routerLink="/" class="hover:text-ocre transition">Inicio</a></li>
+      <li><a routerLink="/estudio" class="hover:text-ocre transition">El Estudio</a></li>
+      <li><a routerLink="/tatuador" class="hover:text-ocre transition">El Tatuador</a></li>
+      <li><a routerLink="/portfolio" class="hover:text-ocre transition">Portfolio</a></li>
+      <li><a routerLink="/reservas" class="hover:text-ocre transition">Reservas</a></li>
+      <li><a routerLink="/contacto" class="hover:text-ocre transition">Contacto</a></li>
+    </ul>
+  </div>
+</nav>
 
-<button class="bg-accent text-white font-bold py-2 px-4 rounded">
-  Botón
-</button>
+<!-- Aquí Angular inyecta las páginas -->
+<router-outlet></router-outlet>
