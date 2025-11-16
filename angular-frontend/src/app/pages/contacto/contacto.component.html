@@ -5,24 +5,24 @@
 
     <div class="campo" style="display:flex;flex-direction:column;">
       <label for="nombre" style="color:#d6a93a;font-weight:600;">Nombre *</label>
-      <input id="nombre" type="text" formControlName="nombre" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;" />
+      <input id="nombre" type="text" formControlName="nombre" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;display:block;max-width:100%;overflow-x:hidden;" />
       <small *ngIf="form.controls['nombre'].touched && form.controls['nombre'].invalid" style="color:#d66b6b;font-size:.85rem;margin-top:.4rem;">El nombre es obligatorio.</small>
     </div>
 
     <div class="campo" style="display:flex;flex-direction:column;">
       <label for="email" style="color:#d6a93a;font-weight:600;">Correo electrónico *</label>
-      <input id="email" type="email" formControlName="email" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;" />
+      <input id="email" type="email" formControlName="email" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;display:block;max-width:100%;overflow-x:hidden;" />
       <small *ngIf="form.controls['email'].touched && form.controls['email'].invalid" style="color:#d66b6b;font-size:.85rem;margin-top:.4rem;">Introduce un correo válido.</small>
     </div>
 
     <div class="campo" style="display:flex;flex-direction:column;">
       <label for="telefono" style="color:#d6a93a;font-weight:600;">Teléfono</label>
-      <input id="telefono" type="text" formControlName="telefono" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;" />
+      <input id="telefono" type="text" formControlName="telefono" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;display:block;max-width:100%;overflow-x:hidden;" />
     </div>
 
     <div class="campo" style="display:flex;flex-direction:column;">
       <label for="mensaje" style="color:#d6a93a;font-weight:600;">Mensaje *</label>
-      <textarea id="mensaje" rows="5" formControlName="mensaje" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;"></textarea>
+      <textarea id="mensaje" rows="5" formControlName="mensaje" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;display:block;max-width:100%;overflow-x:hidden;"></textarea>
       <small *ngIf="form.controls['mensaje'].touched && form.controls['mensaje'].invalid" style="color:#d66b6b;font-size:.85rem;margin-top:.4rem;">Escribe al menos 10 caracteres.</small>
     </div>
 
@@ -30,6 +30,5 @@
       <button type="submit" [disabled]="cargando" style="padding:.9rem 1.5rem;border-radius:1rem;border:2px solid #d6a93a;background:#d6a93a;color:#031226;font-family:'Cinzel',serif;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:1rem;">{{ cargando ? 'Enviando...' : 'Enviar mensaje' }}</button>
       <p *ngIf="enviado" style="color:#d6a93a;font-weight:700;font-family:'Cinzel',serif;">¡Mensaje enviado correctamente!</p>
     </div>
-
   </form>
 </div>

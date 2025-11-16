@@ -1,29 +1,43 @@
-<nav class="font-cinzel fixed top-0 left-0 w-full bg-blue-900 backdrop-blur-sm z-50 shadow-md">
-  <div class="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
-    
-    <!-- LOGO + NOMBRE pegados -->
-    <a routerLink="/" class="flex items-center gap-0 md:gap-0 no-underline">
-      <!-- mini logo -->
-      <img src="/assets/logo-mini.png"
-           alt="Eterna Aurea Tattoo Studio"
-           class="h-8 sm:h-9 md:h-10 lg:h-12 w-auto block" />
-
-      <!-- texto junto al logo -->
-      <div class="flex flex-col leading-tight">
-  <span class="text-[#d6a93a] text-lg md:text-xl lg:text-2xl font-semibold whitespace-nowrap">Eterna Aurea</span>
-  <span class="text-[#d6a93a] text-sm md:text-base uppercase font-semibold tracking-wide -mt-1 whitespace-nowrap">Tattoo Studio</span>
+<nav class="font-cinzel fixed top-0 left-0 w-full bg-blue-900/95 backdrop-blur-sm z-50 shadow-md overflow-x-hidden">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between w-full">
+    <a routerLink="/" (click)="closeMenu()" class="flex items-center gap-3 no-underline min-w-0">
+      <img src="/assets/logo-mini.png" alt="Eterna Aurea Tattoo Studio" class="h-9 w-auto block flex-shrink-0" />
+      <div class="flex flex-col leading-tight min-w-0">
+        <span class="text-[#d6a93a] text-lg md:text-xl lg:text-2xl font-semibold whitespace-nowrap truncate">Eterna Aurea</span>
+        <span class="text-[#d6a93a] text-sm md:text-base uppercase font-semibold tracking-wide -mt-1 whitespace-nowrap truncate">Tattoo Studio</span>
       </div>
-  </a>
+    </a>
 
-    <!-- MENÚ -->
-    <ul class="flex space-x-6 text-base md:text-lg uppercase tracking-wide text-[#f5e9cf]">
-      <li><a href="#inicio" (click)="scrollTo($event,'inicio')" class="hover:text-ocre transition">Inicio</a></li>
-      <li><a href="#estudio" (click)="scrollTo($event,'estudio')" class="hover:text-ocre transition">El Estudio</a></li>
-      <li><a href="#tatuador" (click)="scrollTo($event,'tatuador')" class="hover:text-ocre transition">El Tatuador</a></li>
-      <li><a href="#portfolio" (click)="scrollTo($event,'portfolio')" class="hover:text-ocre transition">Portfolio</a></li>
-      <li><a href="#reservas" (click)="scrollTo($event,'reservas')" class="hover:text-ocre transition">Reservas</a></li>
-      <li><a href="#contacto" (click)="scrollTo($event,'contacto')" class="hover:text-ocre transition">Contacto</a></li>
+    <ul class="hidden md:flex space-x-6 text-base md:text-lg uppercase tracking-wide text-[#f5e9cf]">
+      <li><a href="#inicio" (click)="scrollTo($event,'inicio')" class="hover:text-[#d6a93a] transition">Inicio</a></li>
+      <li><a href="#estudio" (click)="scrollTo($event,'estudio')" class="hover:text-[#d6a93a] transition">El Estudio</a></li>
+      <li><a href="#tatuador" (click)="scrollTo($event,'tatuador')" class="hover:text-[#d6a93a] transition">El Tatuador</a></li>
+      <li><a href="#portfolio" (click)="scrollTo($event,'portfolio')" class="hover:text-[#d6a93a] transition">Portfolio</a></li>
+      <li><a href="#reservas" (click)="scrollTo($event,'reservas')" class="hover:text-[#d6a93a] transition">Reservas</a></li>
+      <li><a href="#contacto" (click)="scrollTo($event,'contacto')" class="hover:text-[#d6a93a] transition">Contacto</a></li>
     </ul>
+
+    <button (click)="toggleMenu()" aria-label="Abrir menú" class="block md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d6a93a] relative z-50">
+      <svg *ngIf="!isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#f5e9cf]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
+      </svg>
+      <svg *ngIf="isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#f5e9cf]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div *ngIf="isMenuOpen" class="md:hidden w-full overflow-x-hidden">
+    <div class="px-4 pb-6">
+      <ul class="flex flex-col space-y-3 text-base uppercase tracking-wide text-[#f5e9cf]">
+        <li><a href="#inicio" (click)="onMobileLink('inicio')" class="block px-3 py-2 rounded-md hover:bg-blue-800/60">Inicio</a></li>
+        <li><a href="#estudio" (click)="onMobileLink('estudio')" class="block px-3 py-2 rounded-md hover:bg-blue-800/60">El Estudio</a></li>
+        <li><a href="#tatuador" (click)="onMobileLink('tatuador')" class="block px-3 py-2 rounded-md hover:bg-blue-800/60">El Tatuador</a></li>
+        <li><a href="#portfolio" (click)="onMobileLink('portfolio')" class="block px-3 py-2 rounded-md hover:bg-blue-800/60">Portfolio</a></li>
+        <li><a href="#reservas" (click)="onMobileLink('reservas')" class="block px-3 py-2 rounded-md hover:bg-blue-800/60">Reservas</a></li>
+        <li><a href="#contacto" (click)="onMobileLink('contacto')" class="block px-3 py-2 rounded-md hover:bg-blue-800/60">Contacto</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
 <router-outlet></router-outlet>

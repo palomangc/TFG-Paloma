@@ -14,6 +14,21 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnDestroy {
 
+  isMenuOpen = false;
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu(): void {
+    this.isMenuOpen = false;
+  }
+
+  onMobileLink(id: string): void {
+    this.closeMenu();
+    this.scrollTo(new Event('click'), id);
+  }
+
   private pendingFragment: string | null = null;
   private routerSub: Subscription;
   public title = 'angular-frontend';
