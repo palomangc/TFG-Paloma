@@ -1,17 +1,81 @@
-<!-- Hero con video de fondo -->
-<section id="inicio" class="relative h-screen flex items-center justify-center font-romano">
-  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover brightness-50">
-    <source src="assets/video-bg.mp4" type="video/mp4" />
-  </video>
-  <div class="absolute inset-0 bg-azulmarino/40"></div>
+<!-- SECCIÓN INICI0 -->
+<section id="inicio" class="scroll-mt-[72px] relative h-screen flex items-center justify-center font-romano">
 
-  <div class="relative z-10 text-center">
-    <img src="assets/logo.png" alt="Logo Romano Tattoo"
-      class="mx-auto w-40 md:w-56 animate-fadeIn drop-shadow-[0_0_10px_rgba(184,137,0,0.7)]">
-    <h2 class="text-ocre text-xl md:text-2xl mt-6">Tatuajes que cuentan tu historia</h2>
-    <a routerLink="/reservas"
-      class="inline-block mt-8 px-6 py-3 border-2 border-ocre text-ocre font-semibold uppercase tracking-wider hover:bg-ocre hover:text-azulmarino transition-all duration-300">
+  <video #bgVideo
+    autoplay muted loop playsinline preload="metadata"
+    class="absolute inset-0 w-full h-full object-cover brightness-50 z-0">
+      <source src="/assets/video-bg.mp4" type="video/mp4" />
+  </video>
+
+  <div class="absolute inset-0 bg-blue-900/40 z-5"></div>
+
+  <div class="relative z-10 text-center px-4">
+
+    <!-- LOGO -->
+    <img
+      src="/assets/logo1.png"
+      alt="Logo Tattoo"
+      class="mx-auto w-64 sm:w-72 md:w-[420px] lg:w-[520px] xl:w-[600px]
+             animate-fadeZoom
+             drop-shadow-[0_0_10px_rgba(184,137,0,0.7)]"
+    />
+
+    <!-- TEXTO -->
+    <h2
+      class="text-#d6a93a font-cinzel text-xl md:text-2xl mt-6
+             opacity-0 animate-fadeUp [animation-delay:0.4s]"
+    >
+      Tatuajes que cuentan tu historia
+    </h2>
+
+    <!-- BOTÓN -->
+    <a
+      routerLink="/reservas"
+      class="font-cinzel inline-block mt-8 px-6 py-3 border-2 border-#d6a93a text-#d6a93a font-semibold uppercase tracking-wider hover:bg-ocre hover:text-azulmarino transition-all duration-300
+             opacity-0 animate-fadeUp [animation-delay:0.8s]"
+    >
       Pide tu cita
     </a>
+
+  </div>
+</section>
+
+<!-- SECCIONES ADICIONALES -->
+
+<section id="estudio" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- CONTENIDO: El Estudio -->
+    <h2 class="text-2xl font-cinzel text-#d6a93a mb-4">El Estudio</h2>
+    <p class="text-[#f5e9cf]">Aquí va la descripción del estudio. Sustituye este texto por tu contenido.</p>
+  </div>
+</section>
+
+<section id="tatuador" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- CONTENIDO: El Tatuador -->
+    <h2 class="text-2xl font-cinzel text-#d6a93a mb-4">El Tatuador</h2>
+    <p class="text-[#f5e9cf]">Información sobre el artista, su estilo y experiencia.</p>
+  </div>
+</section>
+
+<section id="portfolio" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- CONTENIDO: Portfolio -->
+    <h2 class="text-2xl font-cinzel text-#d6a93a mb-4">Portfolio</h2>
+    <p class="text-[#f5e9cf]">Galería y trabajos realizados. Añade aquí tu galería o grid.</p>
+  </div>
+</section>
+
+<section id="reservas" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- CONTENIDO: Reservas -->
+    <h2 class="text-2xl font-cinzel text-#d6a93a mb-4">Reservas</h2>
+    <p class="text-[#f5e9cf]">Formulario o instrucciones para reservar cita.</p>
+  </div>
+</section>
+
+<section id="contacto" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
+  <div class="max-w-6xl mx-auto px-6">
+    <app-contacto></app-contacto>
   </div>
 </section>

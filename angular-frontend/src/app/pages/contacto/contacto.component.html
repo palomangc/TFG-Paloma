@@ -1,20 +1,35 @@
-<section class="min-h-screen bg-azulmarino text-white p-10 font-romano text-center">
-  <h2 class="text-4xl text-ocre mb-6">Contacto</h2>
-  <p class="mb-8">
-    📍 Calle Augusta 12, Sevilla<br>
-    📞 654 321 987<br>
-    ✉️ contacto,romanotattoo.es
-  </p>
+<div class="font-cinzel" style="max-width:900px;margin:auto;padding:2.5rem;border-radius:1.25rem;background:oklch(37.9% 0.146 265.522);border:2px solid #d6a93a;box-sizing:border-box;font-family:'Cinzel',serif;color:#d6a93a;">
+  <h2 style="margin-bottom:1.5rem;text-align:center;font-size:2rem;font-weight:700;color:#d6a93a;">Contacto</h2>
 
-  <div class="flex justify-center gap-6 text-ocre text-3xl">
-    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
-    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-facebook"></i></a>
-    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-tiktok"></i></a>
-  </div>
+  <form [formGroup]="form" (ngSubmit)="enviar()" novalidate style="display:grid;gap:1.5rem;">
 
-  <div class="mt-10">
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!..."
-      width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-  </div>
-</section>
+    <div class="campo" style="display:flex;flex-direction:column;">
+      <label for="nombre" style="color:#d6a93a;font-weight:600;">Nombre *</label>
+      <input id="nombre" type="text" formControlName="nombre" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;" />
+      <small *ngIf="form.controls['nombre'].touched && form.controls['nombre'].invalid" style="color:#d66b6b;font-size:.85rem;margin-top:.4rem;">El nombre es obligatorio.</small>
+    </div>
+
+    <div class="campo" style="display:flex;flex-direction:column;">
+      <label for="email" style="color:#d6a93a;font-weight:600;">Correo electrónico *</label>
+      <input id="email" type="email" formControlName="email" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;" />
+      <small *ngIf="form.controls['email'].touched && form.controls['email'].invalid" style="color:#d66b6b;font-size:.85rem;margin-top:.4rem;">Introduce un correo válido.</small>
+    </div>
+
+    <div class="campo" style="display:flex;flex-direction:column;">
+      <label for="telefono" style="color:#d6a93a;font-weight:600;">Teléfono</label>
+      <input id="telefono" type="text" formControlName="telefono" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;" />
+    </div>
+
+    <div class="campo" style="display:flex;flex-direction:column;">
+      <label for="mensaje" style="color:#d6a93a;font-weight:600;">Mensaje *</label>
+      <textarea id="mensaje" rows="5" formControlName="mensaje" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;"></textarea>
+      <small *ngIf="form.controls['mensaje'].touched && form.controls['mensaje'].invalid" style="color:#d66b6b;font-size:.85rem;margin-top:.4rem;">Escribe al menos 10 caracteres.</small>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:1rem;margin-top:1rem;">
+      <button type="submit" [disabled]="cargando" style="padding:.9rem 1.5rem;border-radius:1rem;border:2px solid #d6a93a;background:#d6a93a;color:#031226;font-family:'Cinzel',serif;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:1rem;">{{ cargando ? 'Enviando...' : 'Enviar mensaje' }}</button>
+      <p *ngIf="enviado" style="color:#d6a93a;font-weight:700;font-family:'Cinzel',serif;">¡Mensaje enviado correctamente!</p>
+    </div>
+
+  </form>
+</div>
