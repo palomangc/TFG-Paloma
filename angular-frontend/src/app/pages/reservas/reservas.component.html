@@ -1,0 +1,19 @@
+<section class="min-h-screen bg-azulmarino text-white p-10 font-romano">
+  <h2 class="text-4xl text-ocre mb-6 text-center">Reservas</h2>
+
+  <form (ngSubmit)="enviarReserva()" class="max-w-xl mx-auto flex flex-col gap-6">
+    <input [(ngModel)]="nombre" name="nombre" type="text" placeholder="Tu nombre"
+      class="bg-transparent border-b-2 border-ocre p-2 focus:outline-none focus:border-white" required>
+
+    <input [(ngModel)]="email" name="email" type="email" placeholder="Tu correo electrónico"
+      class="bg-transparent border-b-2 border-ocre p-2 focus:outline-none focus:border-white" required>
+
+    <textarea [(ngModel)]="mensaje" name="mensaje" placeholder="Describe el tatuaje que deseas"
+      class="bg-transparent border-2 border-ocre p-2 h-32 focus:outline-none focus:border-white resize-none" required></textarea>
+
+    <button type="submit"
+      class="px-6 py-3 border-2 border-ocre text-ocre font-semibold uppercase tracking-wider hover:bg-ocre hover:text-azulmarino transition-all duration-300">
+      Enviar solicitud
+    </button>
+  </form>
+</section>

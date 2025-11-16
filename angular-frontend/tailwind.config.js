@@ -1,19 +1,30 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{html,ts}", // detecta los ficheros donde Tailwind debe buscar clases
-  ],
+  content: ["./src/**/*.{html,ts}"],
   theme: {
     extend: {
       colors: {
-        primary: '#1D4ED8',    // Azul personalizado
-        secondary: '#9333EA',  // Morado personalizado
-        accent: '#F59E0B',     // Amarillo acento
+        azulmarino: '#0a1931',
+        ocre: '#b88900',
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'], // Fuente predeterminada
+        cinzel: ['"Cinzel"', 'serif'],
       },
-    },
-  },
+      keyframes: {
+        fadeZoom: {
+          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        fadeUp: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        fadeZoom: "fadeZoom 1.2s ease-out forwards",
+        fadeUp: "fadeUp 1s ease-out forwards",
+      },
+      },
+      },
   plugins: [],
 }
