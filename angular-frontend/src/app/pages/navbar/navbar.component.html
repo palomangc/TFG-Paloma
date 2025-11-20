@@ -1,0 +1,42 @@
+<nav class="font-cinzel fixed top-0 left-0 w-full bg-blue-900/80 backdrop-blur-sm z-50 shadow-md">
+  <div class="max-w-6xl mx-auto px-6 py-1 flex justify-between items-center">
+    <a routerLink="/" class="flex items-center gap-3 no-underline">
+      <img src="/assets/logo-mini.png" alt="Eterna Aurea Tattoo Studio" class="h-10 sm:h-12 md:h-14 w-auto" />
+      <div class="hidden sm:flex flex-col text-center leading-tight ml-1 items-center">
+        <span class="text-[#d6a93a] text-lg md:text-xl font-semibold">Eterna Aurea</span>
+        <span class="text-[#d6a93a] text-xs md:text-sm uppercase font-semibold tracking-wide -mt-0.5">Tattoo Studio</span>
+      </div>
+    </a>
+
+    <ul class="hidden md:flex space-x-6 text-base md:text-lg uppercase tracking-wide text-[#f5e9cf]">
+      <li><a href="#inicio" (click)="onNavClick('inicio')" class="hover:text-ocre transition">Inicio</a></li>
+      <li><a href="#estudio" (click)="onNavClick('estudio')" class="hover:text-ocre transition">El Estudio</a></li>
+      <li><a href="#tatuador" (click)="onNavClick('tatuador')" class="hover:text-ocre transition">El Tatuador</a></li>
+      <li><a href="#portfolio" (click)="onNavClick('portfolio')" class="hover:text-ocre transition">Portfolio</a></li>
+      <li><a href="#reservas" (click)="onNavClick('reservas')" class="hover:text-ocre transition">Reservas</a></li>
+      <li><a href="#contacto" (click)="onNavClick('contacto')" class="hover:text-ocre transition">Contacto</a></li>
+    </ul>
+
+    <div class="md:hidden">
+      <button (click)="toggleMenu()" aria-label="Abrir menú" [attr.aria-expanded]="menuOpen" aria-controls="mobile-menu" class="p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#d6a93a] header-hambutton">
+        <svg *ngIf="!menuOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#d6a93a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+        </svg>
+        <svg *ngIf="menuOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#d6a93a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="menuOpen" id="mobile-menu" class="mobile-menu md:hidden" (click)="onBackdropClick($event)" [attr.aria-hidden]="!menuOpen">
+    <ul class="px-6 py-4 flex flex-col gap-3 text-lg font-semibold text-white">
+      <li><a #firstMenuLink (click)="onNavClick('inicio')" href="#inicio">Inicio</a></li>
+      <li><a (click)="onNavClick('estudio')" href="#estudio">El Estudio</a></li>
+      <li><a (click)="onNavClick('tatuador')" href="#tatuador">El Tatuador</a></li>
+      <li><a (click)="onNavClick('portfolio')" href="#portfolio">Portfolio</a></li>
+      <li><a (click)="onNavClick('reservas')" href="#reservas">Reservas</a></li>
+      <li><a (click)="onNavClick('contacto')" href="#contacto">Contacto</a></li>
+    </ul>
+  </div>
+</nav>
