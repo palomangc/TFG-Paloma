@@ -4,11 +4,12 @@ import { Router, ActivatedRoute, NavigationEnd, ActivatedRouteSnapshot } from '@
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ContactoComponent } from '../contacto/contacto.component';
+import { EstudioComponent } from "../estudio/estudio.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ContactoComponent],
+  imports: [CommonModule, ContactoComponent, EstudioComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

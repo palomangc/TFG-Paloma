@@ -41,6 +41,10 @@ section#inicio {
   height: 100vh;
   min-height: 640px;
   overflow: hidden;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  display: block;
+  box-sizing: border-box;
 }
 
 section#inicio .overlay-dark {
@@ -125,4 +129,17 @@ section#inicio img {
   .triple-video { display: flex; }
   .single-video { display: none; }
   .mobile-menu { display: none; }
+}
+
+/* Sombra ligera para mejorar la lectura sobre vídeo */
+section#inicio h1,
+section#inicio h2,
+section#inicio p,
+section#inicio a {
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.75);
+}
+#estudio {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  scroll-margin-top: var(--header-height);
 }

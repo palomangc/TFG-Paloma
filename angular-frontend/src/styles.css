@@ -4,3 +4,6 @@
 html, body {
   overflow-x: hidden !important;
 }
+html {
+  scroll-behavior: smooth;
+}
