@@ -1,17 +1,16 @@
 <nav class="font-cinzel fixed top-0 left-0 w-full bg-[oklch(33%_0.146_265.522)] z-50 backdrop-blur-sm shadow-sm">
   <div class="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center border-b-0">
-    <a routerLink="/" class="flex items-center gap-3 no-underline">
-      <div class="isolate">
-        <img src="/assets/logo-mini.webp"
-            alt="Eterna Aurea Tattoo Studio"
-            class="h-10 sm:h-12 md:h-14 w-auto mix-blend-normal brightness-110 contrast-110" />
-      </div>
+  <a href="#inicio"
+   class="flex items-center gap-1 no-underline text-ocre hover:text-white transition-colors duration-200">
+  <img src="/assets/logo-mini1.webp"
+       alt="Eterna Aurea Tattoo Studio"
+       class="block h-12 sm:h-12 md:h-16 w-auto -mr-2 select-none" />
 
-      <div class="hidden sm:flex flex-col text-center leading-tight ml-1 items-center">
-        <span class="text-[#d6a93a] text-lg md:text-xl font-semibold">Eterna Aurea</span>
-        <span class="text-[#d6a93a] text-xs md:text-sm uppercase font-semibold tracking-wide -mt-0.5">Tattoo Studio</span>
-      </div>
-    </a>
+  <div class="hidden sm:flex flex-col text-center leading-tight ml-1 items-center">
+    <span class="text-lg md:text-xl font-semibold">Eterna Aurea</span>
+    <span class="text-xs md:text-sm uppercase font-semibold tracking-wide -mt-0.5">Tattoo Studio</span>
+  </div>
+</a>
 
     <ul class="hidden md:flex space-x-6 text-base md:text-lg uppercase tracking-wide text-[#f5e9cf]">
       <li><a href="#inicio" (click)="onNavClick('inicio')" class="hover:text-ocre transition">Inicio</a></li>

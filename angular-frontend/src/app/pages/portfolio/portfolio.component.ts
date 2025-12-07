@@ -26,7 +26,6 @@ export class PortfolioComponent implements OnDestroy {
     { src: '/portfolio/portofolio17.webp' },
     { src: '/portfolio/portofolio16.webp' },
     { src: '/portfolio/portofolio15.webp' },
-    { src: '/portfolio/portofolio14.webp' },
     { src: '/portfolio/portofolio13.webp' },
     { src: '/portfolio/portofolio12.webp' },
     { src: '/portfolio/portofolio11.webp' },

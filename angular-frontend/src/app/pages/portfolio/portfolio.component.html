@@ -14,14 +14,17 @@
     <!-- GALERÍA -->
     <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <ng-container *ngFor="let img of images; let i = index">
-        <div class="overflow-hidden rounded-lg border border-ocre/40 shadow-lg">
+        <!-- aplicamos aspect-[2/3] al contenedor -->
+        <div class="overflow-hidden rounded-lg border border-ocre/40 shadow-lg aspect-[2/3] box-border">
           <button type="button"
-                  class="w-full h-full p-0 bg-transparent"
+                  class="w-full h-full p-0 bg-transparent block"
                   (click)="open(i)"
                   [attr.aria-label]="'Abrir imagen ' + (i + 1)">
             <img [src]="img.src"
-                 [alt]="img.alt"
-                 class="w-full aspect-[2/3] object-cover transition-transform duration-500 hover:scale-105">
+                [alt]="img.alt"
+                class="w-full h-full object-cover block transition-transform duration-500 hover:scale-105 select-none"
+                loading="lazy"
+                decoding="async" />
           </button>
         </div>
       </ng-container>
@@ -29,23 +32,21 @@
 
     <!-- SECCIÓN DE MÁS TRABAJOS -->
 <div class="mt-16">
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
     <ng-container *ngFor="let img of extraImages; let i = index">
-      <div class="overflow-hidden rounded-md border border-ocre/20 shadow-md">
+      <div class="overflow-hidden rounded-md border border-ocre/20 shadow-md aspect-square box-border">
         <button type="button"
-                class="w-full h-full p-0 bg-transparent"
+                class="w-full h-full p-0 bg-transparent block"
                 (click)="openExtra(i)"
                 [attr.aria-label]="'Abrir imagen ' + (i + 1)">
           <img [src]="img.src"
                [alt]="img.alt"
-               class="w-full aspect-square object-cover transition-transform duration-500 hover:scale-105">
+               class="w-full h-full object-cover block transition-transform duration-500 hover:scale-105 select-none" />
         </button>
       </div>
     </ng-container>
   </div>
-
 </div>
-
 
   </div>
 
