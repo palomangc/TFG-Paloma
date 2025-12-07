@@ -5,11 +5,13 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ContactoComponent } from '../contacto/contacto.component';
 import { EstudioComponent } from "../estudio/estudio.component";
+import { TatuadorComponent } from "../tatuador/tatuador.component";
+import { PortfolioComponent } from "../portfolio/portfolio.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ContactoComponent, EstudioComponent],
+  imports: [CommonModule, ContactoComponent, EstudioComponent, TatuadorComponent, PortfolioComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -23,7 +25,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   menuOpen = false;
   private routerSub?: Subscription;
   private offsets = [5,52,30];
-  private videoPath = '/assets/video-bg.mp4';
+  private videoPath = '/assets/video-bg.webm';
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 

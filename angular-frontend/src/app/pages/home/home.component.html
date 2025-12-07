@@ -2,7 +2,7 @@
 
 <section id="inicio" class="scroll-mt-[72px] relative h-screen flex items-center justify-center font-romano overflow-hidden">
 
-  <div class="triple-video absolute inset-0 z-0 hidden md:flex">
+  <div class="triple-video absolute inset-0 z-0 hidden md:flex filter blur-[1px]">
     <div class="col relative overflow-hidden">
       <video #bgVideo0 playsinline muted preload="metadata" class="video-col"></video>
     </div>
@@ -20,8 +20,10 @@
 
   <div class="absolute inset-0 bg-blue-900/90 z-5 overlay-dark"></div>
 
-  <div class="relative z-10 contenido text-center px-4">
-    <img src="/assets/logo1.png" alt="Logo Tattoo" class="mx-auto w-64 sm:w-72 md:w-[420px] lg:w-[520px] xl:w-[600px] animate-fadeZoom drop-shadow-[0_0_10px_rgba(184,137,0,0.7)]" />
+  <div class="relative z-10 contenido text-center px-4 Sombra_negra">
+    <div class="mx-auto w-64 sm:w-72 md:w-[420px] lg:w-[520px] xl:w-[600px]">
+  <img src="/assets/logo1.webp" alt="Logo Tattoo" class="w-full" />
+  </div>
     <h2 class="text-[#d6a93a] font-cinzel text-xl md:text-2xl mt-6 opacity-0 animate-fadeUp [animation-delay:0.4s]">Tatuajes que cuentan tu historia</h2>
     <a routerLink="/reservas" class="font-cinzel inline-block mt-8 px-6 py-3 border-2 border-[#d6a93a] text-[#d6a93a] font-semibold uppercase tracking-wider hover:bg-ocre hover:text-azulmarino transition-all duration-300 opacity-0 animate-fadeUp [animation-delay:0.8s]">Pide tu cita</a>
   </div>
@@ -30,19 +32,11 @@
 <!-- El estudio-->
 <app-estudio></app-estudio>
 
-<section id="tatuador" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
-  <div class="max-w-6xl mx-auto px-6">
-    <h2 class="text-2xl font-cinzel text-#d6a93a mb-4">El Tatuador</h2>
-    <p class="text-[#f5e9cf]">Información sobre el artista, su estilo y experiencia.</p>
-  </div>
-</section>
+<!--El tatuador-->
+<app-tatuador></app-tatuador>
 
-<section id="portfolio" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
-  <div class="max-w-6xl mx-auto px-6">
-    <h2 class="text-2xl font-cinzel text-#d6a93a mb-4">Portfolio</h2>
-    <p class="text-[#f5e9cf]">Galería y trabajos realizados. Añade aquí tu galería o grid.</p>
-  </div>
-</section>
+<!--Portfolio-->
+<app-portfolio></app-portfolio>
 
 <section id="reservas" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
   <div class="max-w-6xl mx-auto px-6">

@@ -1,11 +1,70 @@
-<section class="min-h-screen bg-azulmarino text-white p-10 font-romano">
-  <h2 class="text-4xl text-ocre mb-6">El Tatuador</h2>
-  <div class="flex flex-col md:flex-row items-center gap-8">
-    <img src="assets/tatuador.jpg" alt="Tatuador principal" class="w-64 h-64 object-cover rounded-full border-4 border-ocre shadow-lg" />
-    <p class="max-w-2xl">
-      <strong>Marco Romano</strong> es el artista principal del estudio.  
-      Con más de 10 años de experiencia, su estilo combina el realismo clásico
-      con detalles inspirados en la escultura romana y el arte mitológico.
-    </p>
+<section id="tatuador" class="scroll-mt-[72px] w-full bg-[oklch(28%_0.146_265.522)] font-cinzel">
+  <div class="max-w-6xl mx-auto pt-8 pb-20">
+
+    <!-- TITULO + LAUREL -->
+    <div class="text-center">
+      <h2 class="text-5xl md:text-6xl font-romano text-ocre tracking-[0.08em]">
+        El Artista
+      </h2>
+      <img src="/assets/laurel.webp"
+           alt="ornamento de laurel"
+           class="mx-auto w-[300px] opacity-95 -mt-16 translate-x-[8px]" />
+    </div>
+
+    <!-- DESCRIPCIÓN + FOTO DERECHA -->
+    <div class="grid grid-cols-1 md:[grid-template-columns:1fr_auto] gap-20 items-center mt-8">
+
+      <!-- TEXTO -->
+      <div>
+        <h3 class="text-2xl md:text-3xl font-romano text-ocre mb-4 tracking-[0.06em]">
+         Amuedo Tattoo
+        </h3>
+
+        <p id="descripcion-artista"
+           class="text-lg md:text-xl text-[#f5e9cf]/90 leading-relaxed tracking-wide text-justify">
+          Jose Domingo Sánchez Amuedo, originario de Zafra (Badajoz), es un artista cuya pasión por el arte clásico y la historia antigua ha marcado profundamente su manera de entender el tatuaje. Desde que comenzó su trayectoria en 2023, ha mantenido un compromiso constante con la formación y la mejora continua, aprendiendo de algunos de los tatuadores más reconocidos a través de seminarios y estudio constante. <br>
+          El realismo y las referencias clásicas son una parte importante de su trabajo, pero Jose entiende el tatuaje como un arte amplio. Por eso se adapta a distintos estilos y propuestas, buscando siempre que cada persona encuentre en su piel una obra hecha con dedicación, respeto y buen gusto. <br>
+          Su personalidad tranquila y cercana se refleja en su manera de trabajar: escucha, aconseja y cuida cada paso del proceso, creando un ambiente cómodo y profesional. Para él, es fundamental que cada persona se lleve un tatuaje bien hecho y con el que se sienta realmente a gusto.
+        </p>
+
+        <!-- Etiquetas -->
+        <ul class="mt-6 text-[#f5e9cf]/85 space-x-2">
+          <li class="inline-block px-8 py-4 rounded-full border border-ocre/80 text-xl">Realismo</li>
+          <li class="inline-block px-8 py-4 rounded-full border border-ocre/80 text-xl">Fineline</li>
+          <li class="inline-block px-8 py-4 rounded-full border border-ocre/80 text-xl">Puntillismo de arrastre</li>
+        </ul>
+      </div>
+
+      <!-- FOTO DERECHA (FOTO PRINCIPAL) -->
+      <div class="overflow-hidden rounded-xl border border-ocre/40 shadow-lg max-w-[360px] md:ml-auto">
+        <img src="/tatuador/artista2.webp"
+             alt="Retrato del artista"
+             class="w-full aspect-[2/3] object-cover object-center transition-transform duration-500 hover:scale-105">
+      </div>
+
+    </div>
+
+    <!-- SEPARADOR -->
+    <div class="mt-12"></div>
+
+    <!-- GALERÍA INFERIOR (2 FOTOS) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+      <!-- Imagen 2 -->
+      <div class="overflow-hidden rounded-lg border border-ocre/40 shadow-lg">
+        <img src="/tatuador/artista1.webp"
+             alt="Foto del artista trabajando"
+             class="w-full aspect-[2/3] object-cover transition-transform duration-500 hover:scale-105">
+      </div>
+
+      <!-- Imagen 3 -->
+      <div class="overflow-hidden rounded-lg border border-ocre/40 shadow-lg">
+        <img src="/tatuador/artista3.webp"
+             alt="Detalle del estilo del artista"
+             class="w-full aspect-[2/3] object-cover transition-transform duration-500 hover:scale-105">
+      </div>
+
+    </div>
+
   </div>
 </section>

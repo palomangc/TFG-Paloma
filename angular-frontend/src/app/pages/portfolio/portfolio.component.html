@@ -1,11 +1,86 @@
-<section class="min-h-screen bg-blue-900 text-white p-10 font-romano">
-  <h2 class="text-4xl text-ocre mb-10 text-center">Portfolio</h2>
+<section id="portfolio" class="scroll-mt-[72px] w-full bg-[oklch(28%_0.146_265.522)] font-cinzel">
+  <div class="max-w-6xl mx-auto pt-8 pb-20">
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    <div *ngFor="let img of [1,2,3,4,5,6]" class="relative group">
-      <img src="assets/portfolio/{{img}}.jpg" alt="Tatuaje {{img}}" class="w-full h-72 object-cover rounded-lg shadow-lg group-hover:scale-105 transition-transform duration-300" />
-      <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-ocre text-lg transition-opacity">
-        Detalle {{img}}
+    <!-- TITULO + LAUREL -->
+    <div class="text-center">
+      <h2 class="text-5xl md:text-6xl font-romano text-ocre tracking-[0.08em]">
+        Portfolio
+      </h2>
+      <img src="/assets/laurel.webp"
+           alt="ornamento de laurel"
+           class="mx-auto w-[300px] opacity-95 -mt-16 translate-x-[8px]" />
+    </div>
+
+    <!-- GALERÍA -->
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <ng-container *ngFor="let img of images; let i = index">
+        <div class="overflow-hidden rounded-lg border border-ocre/40 shadow-lg">
+          <button type="button"
+                  class="w-full h-full p-0 bg-transparent"
+                  (click)="open(i)"
+                  [attr.aria-label]="'Abrir imagen ' + (i + 1)">
+            <img [src]="img.src"
+                 [alt]="img.alt"
+                 class="w-full aspect-[2/3] object-cover transition-transform duration-500 hover:scale-105">
+          </button>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- SECCIÓN DE MÁS TRABAJOS -->
+<div class="mt-16">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <ng-container *ngFor="let img of extraImages; let i = index">
+      <div class="overflow-hidden rounded-md border border-ocre/20 shadow-md">
+        <button type="button"
+                class="w-full h-full p-0 bg-transparent"
+                (click)="openExtra(i)"
+                [attr.aria-label]="'Abrir imagen ' + (i + 1)">
+          <img [src]="img.src"
+               [alt]="img.alt"
+               class="w-full aspect-square object-cover transition-transform duration-500 hover:scale-105">
+        </button>
+      </div>
+    </ng-container>
+  </div>
+
+</div>
+
+
+  </div>
+
+  <!-- LIGHTBOX / MODAL -->
+  <div
+    class="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-6"
+    *ngIf="lightboxOpen"
+    (click)="onBackdropClick($event)"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Visor de imágenes">
+
+    <div class="relative w-full max-w-[1100px] mx-auto" (click)="$event.stopPropagation()">
+      <!-- Close -->
+      <button (click)="close()" class="absolute right-0 top-0 text-[#f5e9cf] bg-transparent p-3 rounded-md hover:bg-white/5" aria-label="Cerrar galería">✕</button>
+
+      <!-- Image container -->
+      <div class="bg-[#14120f] rounded-2xl overflow-hidden shadow-2xl">
+        <img [src]="currentImage.src" [alt]="currentImage.alt" class="w-full max-h-[80vh] object-contain bg-[#0f0e0d] select-none"/>
+
+        <div class="p-4 text-sm text-[#f5e9cf]/85">{{ currentImage.caption }}</div>
+      </div>
+
+      <!-- Prev / Next -->
+      <button *ngIf="hasPrev()" (click)="prev()" class="absolute left-[-14px] top-1/2 -translate-y-1/2 rounded-full bg-white/5 p-3 text-2xl text-[#f5e9cf] hover:bg-white/10" aria-label="Anterior">‹</button>
+      <button *ngIf="hasNext()" (click)="next()" class="absolute right-[-14px] top-1/2 -translate-y-1/2 rounded-full bg-white/5 p-3 text-2xl text-[#f5e9cf] hover:bg-white/10" aria-label="Siguiente">›</button>
+
+      <!-- Thumbnails -->
+      <div class="mt-4 flex gap-3 justify-center overflow-auto px-6" aria-hidden="false">
+        <button *ngFor="let t of images; let idx = index"
+                (click)="goTo(idx)"
+                [class]="'w-20 h-12 overflow-hidden rounded-md border border-ocre/40 p-0 ' + (idx === currentIndex ? 'ring-2 ring-ocre/60' : '')"
+                [attr.aria-label]="'Ir a imagen ' + (idx + 1)">
+          <img [src]="t.src" [alt]="t.alt" class="w-full h-full object-cover"/>
+        </button>
       </div>
     </div>
   </div>
