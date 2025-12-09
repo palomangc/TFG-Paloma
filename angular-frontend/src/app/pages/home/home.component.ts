@@ -7,11 +7,12 @@ import { ContactoComponent } from '../contacto/contacto.component';
 import { EstudioComponent } from "../estudio/estudio.component";
 import { TatuadorComponent } from "../tatuador/tatuador.component";
 import { PortfolioComponent } from "../portfolio/portfolio.component";
+import { ReservasComponent } from "../reservas/reservas.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ContactoComponent, EstudioComponent, TatuadorComponent, PortfolioComponent],
+  imports: [CommonModule, ContactoComponent, EstudioComponent, TatuadorComponent, PortfolioComponent, ReservasComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

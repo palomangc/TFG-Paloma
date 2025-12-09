@@ -51,38 +51,51 @@
   </div>
 
   <!-- LIGHTBOX / MODAL -->
-  <div
-    class="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-6"
-    *ngIf="lightboxOpen"
-    (click)="onBackdropClick($event)"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Visor de imágenes">
+<div
+  class="bg-black/60 fixed inset-0 z-50 flex items-center justify-center p-6"
+  *ngIf="lightboxOpen"
+  (click)="onBackdropClick($event)"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Visor de imágenes">
 
-    <div class="relative w-full max-w-[1100px] mx-auto" (click)="$event.stopPropagation()">
-      <!-- Close -->
-      <button (click)="close()" class="absolute right-0 top-0 text-[#f5e9cf] bg-transparent p-3 rounded-md hover:bg-white/5" aria-label="Cerrar galería">✕</button>
+  <!-- Fondo del modal: mismo azul marino principal de la página -->
 
-      <!-- Image container -->
-      <div class="bg-[#14120f] rounded-2xl overflow-hidden shadow-2xl">
-        <img [src]="currentImage.src" [alt]="currentImage.alt" class="w-full max-h-[80vh] object-contain bg-[#0f0e0d] select-none"/>
+  <div class="mt-auto relative w-full max-w-[1100px] mx-auto z-10" (click)="$event.stopPropagation()">
+    <!-- Close -->
+    <button
+      (click)="close()"
+      class="absolute right-4 top-4 z-30 p-3 rounded-md shadow-lg bg-ocre text-[oklch(28%_0.146_265.522)] hover:brightness-95 ring-2 ring-[rgba(0,0,0,0.08)]"
+      aria-label="Cerrar galería">
+      ✕
+    </button>
 
-        <div class="p-4 text-sm text-[#f5e9cf]/85">{{ currentImage.caption }}</div>
-      </div>
+    <!-- Image container -->
+    <div class="bg-blue-900/90 pt-6 rounded-2xl overflow-hidden shadow-2xl relative border border-ocre/20">
+      <img
+        [src]="currentImage.src"
+        [alt]="currentImage.alt"
+        class="w-full max-h-[80vh] object-contain bg-transparent select-none" />
 
-      <!-- Prev / Next -->
-      <button *ngIf="hasPrev()" (click)="prev()" class="absolute left-[-14px] top-1/2 -translate-y-1/2 rounded-full bg-white/5 p-3 text-2xl text-[#f5e9cf] hover:bg-white/10" aria-label="Anterior">‹</button>
-      <button *ngIf="hasNext()" (click)="next()" class="absolute right-[-14px] top-1/2 -translate-y-1/2 rounded-full bg-white/5 p-3 text-2xl text-[#f5e9cf] hover:bg-white/10" aria-label="Siguiente">›</button>
+      <div class="p-4 text-sm text-ocre/90">{{ currentImage.caption }}</div>
 
-      <!-- Thumbnails -->
-      <div class="mt-4 flex gap-3 justify-center overflow-auto px-6" aria-hidden="false">
-        <button *ngFor="let t of images; let idx = index"
-                (click)="goTo(idx)"
-                [class]="'w-20 h-12 overflow-hidden rounded-md border border-ocre/40 p-0 ' + (idx === currentIndex ? 'ring-2 ring-ocre/60' : '')"
-                [attr.aria-label]="'Ir a imagen ' + (idx + 1)">
-          <img [src]="t.src" [alt]="t.alt" class="w-full h-full object-cover"/>
-        </button>
-      </div>
+      <!-- Prev / Next dentro del modal, visibles y con estilo (fondo ocre, texto azul) -->
+      <button
+        *ngIf="hasPrev()"
+        (click)="prev()"
+        class="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full p-3 shadow-lg bg-ocre text-[oklch(28%_0.146_265.522)] ring-2 ring-[rgba(0,0,0,0.06)] focus:outline-none hover:brightness-95"
+        aria-label="Anterior">
+        ‹
+      </button>
+
+      <button
+        *ngIf="hasNext()"
+        (click)="next()"
+        class="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full p-3 shadow-lg bg-ocre text-[oklch(28%_0.146_265.522)] ring-2 ring-[rgba(0,0,0,0.06)] focus:outline-none hover:brightness-95"
+        aria-label="Siguiente">
+        ›
+      </button>
     </div>
+  </div>
   </div>
 </section>
