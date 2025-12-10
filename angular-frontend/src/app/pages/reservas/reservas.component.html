@@ -15,27 +15,32 @@
 
       <!-- Servicios -->
       <div>
-        <label for="service" class="block mb-2 font-bold text-lg">Servicio</label>
-        <select id="service" name="service" required class="w-full rounded-md p-3 text-lg text-[#0b1e3a]">
-          <option value="standard" data-duration="60" selected>Estándar — 60 min</option>
-          <option value="large" data-duration="180">Pieza grande — 180 min</option>
-        </select>
-        <p class="italic font-bold mt-1 text-base text-white">La duración final la ajustará el tatuador según la pieza</p>
-      </div>
+      <label for="service" class="block mb-2 font-bold text-lg">Servicio</label>
+      <select id="service" formControlName="service" required class="w-full rounded-md p-3 text-lg text-[#0b1e3a]" (change)="loadSlots()">
+        <option value="standard" data-duration="60" selected>Estándar — 60 min</option>
+        <option value="large" data-duration="180">Pieza grande — 180 min</option>
+      </select>
+      <p class="italic font-bold mt-1 text-base text-white">La duración final la ajustará el tatuador según la pieza</p>
+    </div>
 
-      <!-- Fecha -->
-      <div>
-        <label for="date" class="block mb-2 font-bold text-lg">Fecha</label>
-        <input id="date" name="date" type="date" required class="w-full rounded-md p-3 text-lg text-[#0b1e3a]" />
-      </div>
+    <!-- Fecha -->
+    <div>
+      <label for="date" class="block mb-2 font-bold text-lg">Fecha</label>
+      <input id="date" formControlName="date" name="date" type="date" required class="w-full rounded-md p-3 text-lg text-[#0b1e3a]" (change)="loadSlots()" />
+    </div>
 
-      <!-- Hora -->
-      <div>
-        <label for="time" class="block mb-2 font-bold text-lg">Hora</label>
-        <select id="time" name="time" required class="w-full rounded-md p-3 text-lg text-[#0b1e3a]">
-          <option value="">Elige una fecha y servicio</option>
-        </select>
-      </div>
+    <!-- Hora -->
+    <div>
+      <label for="time" class="block mb-2 font-bold text-lg">Hora</label>
+      <select id="time" formControlName="time" name="time" required class="w-full rounded-md p-3 text-lg text-[#0b1e3a]">
+        <option value="">Elige una fecha y servicio</option>
+        <option *ngFor="let slot of slots" [value]="slot">{{ slot }}</option>
+      </select>
+
+      <p *ngIf="slots.length === 0" class="text-sm italic mt-1 text-white">No hay franjas disponibles para la fecha/servicio seleccionado.</p>
+    </div>
+
+
 
       <!-- Nombre -->
       <div>

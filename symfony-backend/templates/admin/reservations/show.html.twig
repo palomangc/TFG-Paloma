@@ -1,0 +1,45 @@
+{# templates/admin/reservations/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Reserva #{{ r.id }}{% endblock %}
+
+{% block body %}
+<h1>Reserva #{{ r.id }}</h1>
+
+<ul>
+    <li><strong>Cliente:</strong> {{ r.name }} ({{ r.email }})</li>
+    <li><strong>Teléfono:</strong> {{ r.phone }}</li>
+    <li><strong>Fecha:</strong> {{ r.date ? r.date|date('Y-m-d') : '' }}</li>
+    <li><strong>Hora:</strong> {{ r.time ? r.time|date('H:i') : '' }}</li>
+    <li><strong>Servicio:</strong> {{ r.service }}</li>
+    <li><strong>Duración:</strong> {{ r.duration }} min</li>
+    <li><strong>Estado:</strong> {{ r.status }}</li>
+    <li><strong>Creada:</strong> {{ r.createdAt ? r.createdAt|date('Y-m-d H:i') : '' }}</li>
+</ul>
+
+{% if r.referencePath %}
+    <p>
+        <strong>Referencia:</strong>
+        <a href="{{ path('admin_reservations_download_reference', {id: r.id}) }}">Descargar archivo</a>
+    </p>
+{% endif %}
+
+<p>
+    <a href="{{ path('admin_reservations_list') }}">← Volver al listado</a>
+</p>
+
+{# Formularios de aprobar / rechazar usando CSRF token #}
+<form action="{{ path('admin_reservations_approve', {id: r.id}) }}" method="post" style="display:inline">
+    <input type="hidden" name="_token" value="{{ csrf_token('approve' ~ r.id) }}">
+    <button type="submit">Aprobar</button>
+</form>
+
+<form action="{{ path('admin_reservations_reject', {id: r.id}) }}" method="post" style="display:inline; margin-left:8px;">
+    <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ r.id) }}">
+    <button type="submit">Rechazar</button>
+</form>
+
+<p>
+    <a href="{{ path('admin_reservation_ics', {id: r.id}) }}">Descargar .ics</a>
+</p>
+{% endblock %}

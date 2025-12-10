@@ -11,57 +11,65 @@
            class="mx-auto w-[300px] opacity-95 -mt-16 translate-x-[8px]" />
     </div>
 
-    <!-- GALERÍA -->
-    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <ng-container *ngFor="let img of images; let i = index">
-        <!-- aplicamos aspect-[2/3] al contenedor -->
-        <div class="overflow-hidden rounded-lg border border-ocre/40 shadow-lg aspect-[2/3] box-border">
-          <button type="button"
-                  class="w-full h-full p-0 bg-transparent block"
-                  (click)="open(i)"
-                  [attr.aria-label]="'Abrir imagen ' + (i + 1)">
-            <img [src]="img.src"
-                [alt]="img.alt"
-                class="w-full h-full object-cover block transition-transform duration-500 hover:scale-105 select-none"
-                loading="lazy"
-                decoding="async" />
-          </button>
+    <!-- DESTACADAS -->
+    <div class="flex flex-col md:flex-row justify-center items-stretch gap-6 mb-8">
+      <ng-container *ngFor="let pos of [1,2,3]; let i = index">
+        <!-- .group permite hover en el contenedor afectando la imagen -->
+        <div class="border-2 border-[#d6a93a] box-border group w-full max-w-[420px] md:max-w-[34rem] rounded-2xl overflow-hidden shadow-lg cursor-pointer transform-gpu hover:scale-[1.06] transition-all duration-300 ease-out hover:shadow-2xl"
+        (click)="open(i)" 
+        >
+          <!-- wrapper con ratio más vertical: usamos alturas responsivas -->
+          <div class="w-full h-[420px] md:h-[520px] lg:h-[600px] bg-neutral-900 overflow-hidden">
+            <img
+              [src]="getImageByPosition(pos)"
+              alt="destacada"
+              class="w-full h-full object-cover transform transition-transform duration-500 ease-out will-change-transform"
+            />
+          </div>
         </div>
       </ng-container>
     </div>
 
-    <!-- SECCIÓN DE MÁS TRABAJOS -->
-<div class="mt-16">
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-    <ng-container *ngFor="let img of extraImages; let i = index">
-      <div class="overflow-hidden rounded-md border border-ocre/20 shadow-md aspect-square box-border">
-        <button type="button"
-                class="w-full h-full p-0 bg-transparent block"
-                (click)="openExtra(i)"
-                [attr.aria-label]="'Abrir imagen ' + (i + 1)">
-          <img [src]="img.src"
-               [alt]="img.alt"
-               class="w-full h-full object-cover block transition-transform duration-500 hover:scale-105 select-none" />
-        </button>
-      </div>
-    </ng-container>
-  </div>
+    <!-- GALERÍA -->
+<div
+  class="w-screen relative left-1/2 right-1/2 -translate-x-1/2
+         grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5
+         px-4 sm:px-6 md:px-8 lg:px-16">
+
+  <ng-container *ngFor="let pos of galleryPositions; let i = index">
+    <div
+      class="border-2 border-[#d6a93a] box-border group rounded-xl overflow-hidden bg-neutral-900
+      h-[360px] sm:h-[420px] md:h-[460px] lg:h-[500px]
+      cursor-pointer transform-gpu hover:scale-[1.06] transition-all duration-300 ease-out hover:shadow-2xl"
+      (click)="openExtra(i)"
+    >
+      <img
+        [src]="getImageByPosition(pos)"
+        alt="gallery"
+        class="w-full h-full object-cover transform transition-transform duration-500 ease-out"
+      />
+    </div>
+  </ng-container>
+
+</div>
 </div>
 
-  </div>
-
-  <!-- LIGHTBOX / MODAL -->
+  <!-- LIGHTBOX / MODAL  -->
 <div
   class="bg-black/60 fixed inset-0 z-50 flex items-center justify-center p-6"
   *ngIf="lightboxOpen"
   (click)="onBackdropClick($event)"
+  (touchstart)="onTouchStart($event)"          
+  (touchend)="onTouchEnd($event)"
   role="dialog"
   aria-modal="true"
   aria-label="Visor de imágenes">
 
   <!-- Fondo del modal: mismo azul marino principal de la página -->
-
-  <div class="mt-auto relative w-full max-w-[1100px] mx-auto z-10" (click)="$event.stopPropagation()">
+  <div
+    class="mt-auto relative w-full max-w-[1100px] mx-auto z-10"
+    (click)="$event.stopPropagation()"
+    tabindex="0">
     <!-- Close -->
     <button
       (click)="close()"
@@ -71,7 +79,7 @@
     </button>
 
     <!-- Image container -->
-    <div class="bg-blue-900/90 pt-6 rounded-2xl overflow-hidden shadow-2xl relative border border-ocre/20">
+    <div class="bg-blue-950/90 pt-6 rounded-2xl overflow-hidden shadow-2xl relative border border-ocre/20">
       <img
         [src]="currentImage.src"
         [alt]="currentImage.alt"
@@ -79,7 +87,7 @@
 
       <div class="p-4 text-sm text-ocre/90">{{ currentImage.caption }}</div>
 
-      <!-- Prev / Next dentro del modal, visibles y con estilo (fondo ocre, texto azul) -->
+      <!-- Prev / Next dentro del modal -->
       <button
         *ngIf="hasPrev()"
         (click)="prev()"
@@ -97,5 +105,5 @@
       </button>
     </div>
   </div>
-  </div>
+</div>
 </section>

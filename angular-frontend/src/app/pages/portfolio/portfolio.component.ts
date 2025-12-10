@@ -1,10 +1,15 @@
+// src/app/portfolio/portfolio.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AdminService, PortfolioItem } from '../../services/admin.service';
 
 interface GalleryImage {
   src: string;
   alt?: string;
   caption?: string;
+  position?: number;
+  image?: string;
 }
 
 @Component({
@@ -13,57 +18,74 @@ interface GalleryImage {
   templateUrl: './portfolio.component.html',
   imports: [CommonModule],
 })
-export class PortfolioComponent implements OnDestroy {
-  // 3 imágenes principales 
-  images: GalleryImage[] = [
-    { src: '/portfolio/portfolio01.webp'},
-    { src: '/portfolio/portofolio18.webp'},
-    { src: '/portfolio/portfolio02.webp'},
-  ];
-
-  // Imágenes adicionales 
-  extraImages: GalleryImage[] = [
-    { src: '/portfolio/portofolio17.webp' },
-    { src: '/portfolio/portofolio16.webp' },
-    { src: '/portfolio/portofolio15.webp' },
-    { src: '/portfolio/portofolio13.webp' },
-    { src: '/portfolio/portofolio12.webp' },
-    { src: '/portfolio/portofolio11.webp' },
-    { src: '/portfolio/portfolio10.webp' },
-    { src: '/portfolio/portfolio9.webp' },
-    { src: '/portfolio/portfolio8.webp' },
-    { src: '/portfolio/portfolio7.webp' },
-    { src: '/portfolio/portfolio6.webp' },
-    { src: '/portfolio/portfolio5.webp' },
-    { src: '/portfolio/portfolio4.webp' },
-    { src: '/portfolio/portfolio3.webp' },
-    { src: '/portfolio/portfolio2.webp' },
-    { src: '/portfolio/portfolio1.webp' },
-  ];
-
-  // Combina ambas listas para el visor (modal)
-  get allImages(): GalleryImage[] {
-    return [...this.images, ...this.extraImages];
-  }
+export class PortfolioComponent implements OnInit, OnDestroy {
+  images: GalleryImage[] = [];
+  extraImages: GalleryImage[] = [];
 
   currentIndex = 0;
   lightboxOpen = false;
 
+  private subs = new Subscription();
   private touchStartX = 0;
   private touchEndX = 0;
+
+  constructor(private adminService: AdminService) {}
+
+  ngOnInit(): void {
+    this.adminService.refreshPortfolio(); 
+    this.subs.add(
+      this.adminService.portfolio$.subscribe(items => this.mapItemsToGallery(items))
+    );
+  }
+
+  private mapItemsToGallery(items: PortfolioItem[]) {
+    const imgs = (items || []).map(i => ({
+      src: i.image || '',
+      alt: i.title || '',
+      caption: i.description || '',
+      position: (i as any).position ?? (i as any).order ?? undefined,
+      image: i.image || ''
+    } as GalleryImage));
+    this.images = imgs.slice(0, 3);
+    this.extraImages = imgs.slice(3);
+  }
+
+  get allImages(): GalleryImage[] {
+    return [...this.images, ...this.extraImages];
+  }
 
   get currentImage(): GalleryImage {
     return this.allImages[this.currentIndex] || { src: '', alt: '', caption: '' };
   }
 
-  open(index: number) {
+  featuredPositions = [1,2,3];
+  galleryPositions = Array.from({length:15}, (_,i) => i+4);
+
+  getImageByPosition(position: number): string {
+    const found = this.allImages.find(x => x.position === position);
+    if (found && found.src) return found.src;
+
+    if (position >= 1 && position <= 3) {
+      const idx = position - 1;
+      const candidate = this.images[idx];
+      if (candidate && candidate.src) return candidate.src;
+    }
+
+    if (position >= 4) {
+      const idx = position - 1;
+      if (this.allImages[idx] && this.allImages[idx].src) return this.allImages[idx].src;
+    }
+
+    return '';
+  }
+
+    open(index: number) {
     if (index < 0 || index >= this.allImages.length) return;
     this.currentIndex = index;
     this.lightboxOpen = true;
     document.body.style.overflow = 'hidden';
   }
-
-  // Abrir desde la galería extra 
+  
   openExtra(index: number) {
     const globalIndex = this.images.length + index;
     this.open(globalIndex);
@@ -82,18 +104,8 @@ export class PortfolioComponent implements OnDestroy {
     if (this.hasNext()) this.currentIndex++;
   }
 
-  goTo(index: number) {
-    if (index < 0 || index >= this.allImages.length) return;
-    this.currentIndex = index;
-  }
-
-  hasPrev() {
-    return this.currentIndex > 0;
-  }
-
-  hasNext() {
-    return this.currentIndex < this.allImages.length - 1;
-  }
+  hasPrev() { return this.currentIndex > 0; }
+  hasNext() { return this.currentIndex < this.allImages.length - 1; }
 
   onBackdropClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -115,7 +127,6 @@ export class PortfolioComponent implements OnDestroy {
     }
   }
 
-  // --- Keyboard navigation ---
   @HostListener('document:keydown', ['$event'])
   handleKeydown(event: KeyboardEvent) {
     if (!this.lightboxOpen) return;
@@ -125,6 +136,7 @@ export class PortfolioComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.subs.unsubscribe();
     document.body.style.overflow = '';
   }
 }
