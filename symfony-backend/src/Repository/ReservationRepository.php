@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateTimeInterface;
 use DateTime;
+use DateTimeImmutable; // <<< añadido
 
 /**
  * @extends ServiceEntityRepository<Reservation>
@@ -53,4 +54,39 @@ class ReservationRepository extends ServiceEntityRepository
         // ningún solapamiento encontrado
         return true;
     }
+
+    // ------------------ MÉTODO AÑADIDO (MÍNIMO) ------------------
+    /**
+     * Devuelve reservas confirmadas cuyo start (date+time) está entre $start y $end (inclusive).
+     * Ajusta 'status' si usas otro valor para reservas válidas (ej. 'confirmed', 'paid', etc).
+     *
+     * @param DateTimeImmutable $start
+     * @param DateTimeImmutable $end
+     * @return Reservation[]
+     */
+    public function findConfirmedReservationsBetween(DateTimeImmutable $start, DateTimeImmutable $end): array
+    {
+        // Asumimos que en la entidad tienes campos 'date' (Date) y 'time' (Time) separados.
+        // Hacemos una query que combine date y time en la comparación usando r.date BETWEEN start_date AND end_date
+        // y luego filtramos por status != 'rejected'.
+        // Para simplicidad y compatibilidad, filtramos por date BETWEEN start_date (Y-m-d) and end_date (Y-m-d)
+        // y ordenamos por date+time asc.
+
+        // Convertir a strings para parámetros
+        $startDateStr = $start->format('Y-m-d 00:00:00');
+        $endDateStr = $end->format('Y-m-d 23:59:59');
+
+        // Si en tu entidad 'startAt' ya existe como DateTime, puedes adaptar la query fácilmente.
+        $qb = $this->createQueryBuilder('r')
+            ->andWhere('r.date BETWEEN :startDate AND :endDate')
+            ->andWhere('r.status != :rejected')
+            ->setParameter('startDate', $start->format('Y-m-d'))
+            ->setParameter('endDate', $end->format('Y-m-d'))
+            ->setParameter('rejected', 'rejected')
+            ->orderBy('r.date', 'ASC')
+            ->addOrderBy('r.time', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+    // ----------------------------------------------------------
 }

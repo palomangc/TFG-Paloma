@@ -40,7 +40,7 @@ class AvailabilityController extends AbstractController
         $duration = $durations[$service] ?? 60;
 
         $buffer = 15; // minutos
-        $step   = 15; // minutos
+        $step   = 30; // minutos
 
         // Periodos
         if ($dow >= 1 && $dow <= 5) {

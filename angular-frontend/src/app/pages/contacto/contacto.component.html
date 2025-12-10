@@ -1,35 +1,53 @@
-<div class="font-cinzel max-w-[900px] mx-auto p-10 rounded-2xl bg-[oklch(28%_0.146_265.522)] border-2 border-[#d6a93a] box-border text-[#d6a93a]">
-  <h2 style="margin-bottom:1.5rem;text-align:center;font-size:2rem;font-weight:700;color:#d6a93a;">Contacto</h2>
+<section id="contacto" class="scroll-mt-[72px] w-full bg-[oklch(28%_0.146_265.522)] font-cinzel">
+  <div class="max-w-6xl mx-auto pt-16 pb-20">
 
-  <form [formGroup]="form" (ngSubmit)="enviar()" novalidate style="display:grid;gap:1.5rem;">
-
-    <div class="campo" style="display:flex;flex-direction:column;">
-      <label for="nombre" style="color:#d6a93a;font-weight:600;">Nombre *</label>
-      <input id="nombre" type="text" formControlName="nombre" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;" />
-      <small *ngIf="form.controls['nombre'].touched && form.controls['nombre'].invalid" style="color:#d66b6b;font-size:.85rem;margin-top:.4rem;">El nombre es obligatorio.</small>
+    <!-- TITULO + LAUREL -->
+    <div class="text-center">
+      <h2 class="text-5xl md:text-6xl font-cinzel text-ocre tracking-[0.08em]">
+        Contacto
+      </h2>
+      <img src="/assets/laurel.webp"
+           alt="ornamento de laurel"
+           class="mx-auto w-[300px] opacity-95 -mt-16 translate-x-[8px]" />
     </div>
 
-    <div class="campo" style="display:flex;flex-direction:column;">
-      <label for="email" style="color:#d6a93a;font-weight:600;">Correo electrónico *</label>
-      <input id="email" type="email" formControlName="email" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;" />
-      <small *ngIf="form.controls['email'].touched && form.controls['email'].invalid" style="color:#d66b6b;font-size:.85rem;margin-top:.4rem;">Introduce un correo válido.</small>
+    <div class="font-cinzel max-w-[900px] mx-auto p-10 rounded-2xl bg-blue-950 border-2 border-[#d6a93a] box-border text-[#d6a93a]">
+      <h2 class="mb-6 text-center text-2xl md:text-3xl text-[#d6a93a]">Ponte en contacto con nosotros</h2>
+
+      <form [formGroup]="form" (ngSubmit)="enviar()" novalidate class="grid gap-6">
+
+        <div class="campo flex flex-col">
+          <label for="nombre" class="text-[#d6a93a] font-semibold text-xl">Nombre *</label>
+          <input id="nombre" type="text" formControlName="nombre" class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel" />
+          <small *ngIf="form.controls['nombre'].touched && form.controls['nombre'].invalid" class="text-base text-[#d66b6b] mt-2">El nombre es obligatorio.</small>
+        </div>
+
+        <div class="campo flex flex-col">
+          <label for="email" class="text-[#d6a93a] font-semibold text-xl">Correo electrónico *</label>
+          <input id="email" type="email" formControlName="email" class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel" />
+          <small *ngIf="form.controls['email'].touched && form.controls['email'].invalid" class="text-base text-[#d66b6b] mt-2">Introduce un correo válido.</small>
+        </div>
+
+        <div class="campo flex flex-col">
+          <label for="telefono" class="text-[#d6a93a] font-semibold text-xl">Teléfono</label>
+          <input id="telefono" type="text" formControlName="telefono" class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel" />
+        </div>
+
+        <div class="campo flex flex-col">
+          <label for="mensaje" class="text-[#d6a93a] font-semibold text-xl">Mensaje *</label>
+          <textarea id="mensaje" rows="5" formControlName="mensaje" class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel"></textarea>
+          <small *ngIf="form.controls['mensaje'].touched && form.controls['mensaje'].invalid" class="text-base text-[#d66b6b] mt-2">Escribe al menos 10 caracteres.</small>
+        </div>
+
+        <div class="flex items-center gap-4 mt-4">
+          <button type="submit" [disabled]="cargando" class="py-3 px-6 rounded-[1rem] border-2 border-[#d6a93a] bg-[#d6a93a] text-[#031226] font-cinzel font-bold uppercase text-xl cursor-pointer disabled:opacity-50">
+            {{ cargando ? 'Enviando...' : 'Enviar mensaje' }}
+          </button>
+          <p *ngIf="enviado" class="text-[#d6a93a] font-bold font-cinzel text-xl">¡Mensaje enviado correctamente!</p>
+        </div>
+
+      </form>
     </div>
 
-    <div class="campo" style="display:flex;flex-direction:column;">
-      <label for="telefono" style="color:#d6a93a;font-weight:600;">Teléfono</label>
-      <input id="telefono" type="text" formControlName="telefono" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;" />
-    </div>
-
-    <div class="campo" style="display:flex;flex-direction:column;">
-      <label for="mensaje" style="color:#d6a93a;font-weight:600;">Mensaje *</label>
-      <textarea id="mensaje" rows="5" formControlName="mensaje" style="padding:.8rem 1rem;border:2px solid #d6a93a;border-radius:.75rem;background:#ffffff;color:#d6a93a;font-family:'Cinzel',serif;font-size:1rem;width:100%;box-sizing:border-box;"></textarea>
-      <small *ngIf="form.controls['mensaje'].touched && form.controls['mensaje'].invalid" style="color:#d66b6b;font-size:.85rem;margin-top:.4rem;">Escribe al menos 10 caracteres.</small>
-    </div>
-
-    <div style="display:flex;align-items:center;gap:1rem;margin-top:1rem;">
-      <button type="submit" [disabled]="cargando" style="padding:.9rem 1.5rem;border-radius:1rem;border:2px solid #d6a93a;background:#d6a93a;color:#031226;font-family:'Cinzel',serif;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:1rem;">{{ cargando ? 'Enviando...' : 'Enviar mensaje' }}</button>
-      <p *ngIf="enviado" style="color:#d6a93a;font-weight:700;font-family:'Cinzel',serif;">¡Mensaje enviado correctamente!</p>
-    </div>
-
-  </form>
-</div>
+  </div>
+</section>

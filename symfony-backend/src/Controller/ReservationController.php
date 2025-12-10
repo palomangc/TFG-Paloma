@@ -1,8 +1,10 @@
 <?php
+// symfony-backend/src/Controller/ReservationController.php
 namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Repository\ReservationRepository;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,20 +14,29 @@ use DateTime;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Psr\Log\LoggerInterface;
 
 class ReservationController extends AbstractController
 {
     private EntityManagerInterface $em;
     private ReservationRepository $repo;
     private string $uploadsDir;
+    private MailerService $mailerService;
+    private LoggerInterface $logger;
 
-    public function __construct(EntityManagerInterface $em, ReservationRepository $repo, KernelInterface $kernel)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        ReservationRepository $repo,
+        KernelInterface $kernel,
+        MailerService $mailerService,
+        LoggerInterface $logger
+    ) {
         $this->em = $em;
         $this->repo = $repo;
         $this->uploadsDir = $kernel->getProjectDir() . '/public/uploads/reservations';
+        $this->mailerService = $mailerService;
+        $this->logger = $logger;
     }
-
 
     #[Route('/api/reservations', name: 'api_reservations_create', methods: ['POST'])]
     public function create(Request $req): JsonResponse
@@ -51,12 +62,10 @@ class ReservationController extends AbstractController
         $duration = $durations[$service] ?? 60;
         $buffer = 15;
 
-        // reglas: antelación 24h, max 90 días
         $now = new DateTime();
         $minAllowed = (clone $now)->modify('+24 hours');
         $maxAllowed = (clone $now)->modify('+90 days');
 
-        // slotDateTime combina fecha + hora para comparaciones correctas
         try {
             $slotDateTime = new DateTime($date->format('Y-m-d') . ' ' . $time);
         } catch (\Exception $e) {
@@ -70,8 +79,7 @@ class ReservationController extends AbstractController
             return new JsonResponse(['message' => 'Fecha máxima permitida superada'], 400);
         }
 
-        // horario válido (copiar lógica de availability)
-        $dow = (int)$date->format('N'); // 1..7 (7 = domingo)
+        $dow = (int)$date->format('N');
         if ($dow == 7) {
             return new JsonResponse(['message' => 'Domingo no disponible'], 400);
         }
@@ -83,7 +91,6 @@ class ReservationController extends AbstractController
             return new JsonResponse(['message' => 'El slot no está disponible'], 409);
         }
 
-        // handle file upload
         $referencePath = null;
         $file = $req->files->get('reference');
         if ($file) {
@@ -93,15 +100,14 @@ class ReservationController extends AbstractController
                 $fs->mkdir($uploadsDir, 0755);
             }
 
-            // intento de obtener extensión segura; fallback a 'bin'
             $ext = $file->guessExtension() ?: $file->getClientOriginalExtension() ?: 'bin';
             $filename = uniqid('ref_', true) . '.' . $ext;
 
             try {
                 $file->move($uploadsDir, $filename);
-                $referencePath = $filename;
+                $referencePath = 'uploads/reservations/' . $filename;
             } catch (FileException $e) {
-                // devuelve error 500 para que el cliente sepa que falló la subida
+                $this->logger->error('Error al subir referencia: ' . $e->getMessage());
                 return new JsonResponse(['message' => 'Error al subir el archivo de referencia'], 500);
             }
         }
@@ -109,7 +115,7 @@ class ReservationController extends AbstractController
         $reservation = new Reservation();
         $reservation->setService($service);
         $reservation->setDate($date);
-        $reservation->setTime(new DateTime($time));
+        $reservation->setTime($slotDateTime);
         $reservation->setDuration($duration);
         $reservation->setName($name);
         $reservation->setEmail($email);
@@ -123,10 +129,33 @@ class ReservationController extends AbstractController
         $this->em->persist($reservation);
         $this->em->flush();
 
-        // Crear orden PayPal (Servicio PayPal separado) -> devolver URL
-        $payUrl = null;
-        // $payUrl = $this->paypalService->createOrder($reservation->getId(), 20.0, $returnUrl, $cancelUrl);
+        try {
+            $this->logger->info('ReservationController: sending reservation email', [
+                'reservationId' => $reservation->getId(),
+                'to' => $reservation->getEmail()
+            ]);
 
-        return new JsonResponse(['reservationId' => $reservation->getId(), 'payUrl' => $payUrl], 201);
+            $this->mailerService->sendReservationEmail(
+                $reservation->getEmail(),
+                $reservation->getName(),
+                $reservation->getDate()->format('Y-m-d'),
+                $reservation->getTime()->format('H:i'),
+                $reservation->getService()
+            );
+
+            $this->logger->info('ReservationController: email send invoked', ['reservationId' => $reservation->getId()]);
+        } catch (\Throwable $e) {
+            $this->logger->error('Error enviando email de reserva: ' . $e->getMessage(), [
+                'reservationId' => $reservation->getId(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+
+        $payUrl = null;
+
+        return new JsonResponse([
+            'reservationId' => $reservation->getId(),
+            'payUrl' => $payUrl
+        ], 201);
     }
 }
