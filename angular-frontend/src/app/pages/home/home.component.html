@@ -25,7 +25,7 @@
   <img src="/assets/logo1.webp" alt="Logo Tattoo" class="w-full" />
   </div>
     <h2 class="text-[#d6a93a] font-cinzel text-xl md:text-2xl mt-6 opacity-0 animate-fadeUp [animation-delay:0.4s]">Tatuajes que cuentan tu historia</h2>
-    <a routerLink="/reservas" class="font-cinzel inline-block mt-8 px-6 py-3 border-2 border-[#d6a93a] text-[#d6a93a] font-semibold uppercase tracking-wider hover:bg-ocre hover:text-azulmarino transition-all duration-300 opacity-0 animate-fadeUp [animation-delay:0.8s]">Pide tu cita</a>
+    <a href="/#reservas" class="font-cinzel inline-block mt-8 px-6 py-3 border-2 border-[#d6a93a] text-[#d6a93a] font-semibold uppercase tracking-wider hover:bg-ocre hover:text-azulmarino transition-all duration-300 opacity-0 animate-fadeUp [animation-delay:0.8s]">Pide tu cita</a>
   </div>
 </section>
 
@@ -38,16 +38,8 @@
 <!--Portfolio-->
 <app-portfolio></app-portfolio>
 
-<section id="reservas" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
-  <div class="max-w-6xl mx-auto px-6">
-    <h2 class="text-2xl font-cinzel text-#d6a93a mb-4">Reservas</h2>
-    <p class="text-[#f5e9cf]">Formulario o instrucciones para reservar cita.</p>
-  </div>
-</section>
+<!--Reservas-->
+<app-reservas></app-reservas>
 
 <!-- Contacto -->
-<section id="contacto" tabindex="-1" class="scroll-mt-[72px] w-full py-20 bg-transparent">
-  <div class="max-w-6xl mx-auto px-6">
-    <app-contacto></app-contacto>
-  </div>
-</section>
+<app-contacto></app-contacto>

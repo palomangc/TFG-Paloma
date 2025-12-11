@@ -1,0 +1,48 @@
+{# templates/admin/reservations/list.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservas - Admin{% endblock %}
+
+{% block body %}
+<h1>Reservas</h1>
+
+{% if reservations is empty %}
+    <p>No hay reservas.</p>
+{% else %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Cliente</th>
+                <th>Servicio</th>
+                <th>Duración</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in reservations %}
+            <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.date ? r.date|date('Y-m-d') : '' }}</td>
+                <td>{{ r.time ? r.time|date('H:i') : '' }}</td>
+                <td>{{ r.name }}</td>
+                <td>{{ r.service }}</td>
+                <td>{{ r.duration }} min</td>
+                <td>{{ r.status }}</td>
+                <td>
+                    <a href="{{ path('admin_reservations_show', {id: r.id}) }}">Ver</a>
+                    {# Descarga referencia si existe #}
+                    {% if r.referencePath %}
+                        &nbsp;|&nbsp;<a href="{{ path('admin_reservations_download_reference', {id: r.id}) }}">Descargar referencia</a>
+                    {% endif %}
+                    &nbsp;|&nbsp;<a href="{{ path('admin_reservation_ics', {id: r.id}) }}">ICS</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}

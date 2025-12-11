@@ -1,19 +1,157 @@
-<section class="min-h-screen bg-azulmarino text-white p-10 font-romano">
-  <h2 class="text-4xl text-ocre mb-6 text-center">Reservas</h2>
+<!-- RESERVAS - FORMULARIO -->
+<section id="reservas" class="font-cinzel bg-[oklch(28%_0.146_265.522)] text-[#d6a93a] py-12 scroll-mt-[72px]">
+  <div class="max-w-5xl mx-auto px-6">
 
-  <form (ngSubmit)="enviarReserva()" class="max-w-xl mx-auto flex flex-col gap-6">
-    <input [(ngModel)]="nombre" name="nombre" type="text" placeholder="Tu nombre"
-      class="bg-transparent border-b-2 border-ocre p-2 focus:outline-none focus:border-white" required>
+    <!-- TITULO + LAUREL -->
+    <div class="text-center">
+      <h2 class="text-5xl md:text-6xl font-romano text-ocre tracking-[0.08em]">
+       Reserva tu cita
+      </h2>
+      <img src="/assets/laurel.webp"
+           alt="ornamento de laurel"
+           class="block mx-auto w-[300px] opacity-95 -mt-16 translate-x-[10px]" />
+    </div>
 
-    <input [(ngModel)]="email" name="email" type="email" placeholder="Tu correo electrónico"
-      class="bg-transparent border-b-2 border-ocre p-2 focus:outline-none focus:border-white" required>
+<form id="bookingForm" [formGroup]="form" (ngSubmit)="onSubmit()" class="border-2 border-[#d6a93a] box-border space-y-8 bg-[#071526]/40 p-8 rounded-2xl shadow-lg" novalidate>
 
-    <textarea [(ngModel)]="mensaje" name="mensaje" placeholder="Describe el tatuaje que deseas"
-      class="bg-transparent border-2 border-ocre p-2 h-32 focus:outline-none focus:border-white resize-none" required></textarea>
+      <!-- Servicios -->
+     <select id="service"
+        formControlName="service"
+        required
+        class="w-full rounded-md p-3 text-2xl text-[#0b1e3a]"
+        (change)="onServiceChange($event)">
+        <option value="standard" data-duration="60">Estándar — 60 min</option>
+        <option value="large" data-duration="180">Pieza grande — 180 min</option>
+      </select>
 
-    <button type="submit"
-      class="px-6 py-3 border-2 border-ocre text-ocre font-semibold uppercase tracking-wider hover:bg-ocre hover:text-azulmarino transition-all duration-300">
-      Enviar solicitud
-    </button>
-  </form>
+      <!-- Fecha -->
+           <!-- Fecha con calendario visual -->
+      <div>
+      <label for="date" class="block mb-2 font-bold text-2xl">Fecha</label>
+
+      <!-- Calendario visual -->
+      <div class="w-full max-w-[680px] mx-auto p-4 bg-[#041627]/50 rounded-xl shadow-md">
+
+        <!-- Cabecera mes -->
+        <div class="flex items-center justify-between mb-4">
+          <button type="button" (click)="prevMonth()" class="px-4 py-2 text-lg rounded bg-ocre/80 hover:bg-white/5">‹</button>
+          <div class="text-2xl font-bold">
+            {{ calendarMonthNames[displayMonth] }} {{ displayYear }}
+          </div>
+          <button type="button" (click)="nextMonth()" class="px-4 py-2 text-lg rounded bg-ocre/80 hover:bg-white/5">›</button>
+        </div>
+
+        <!-- Días de la semana -->
+        <div class="grid grid-cols-7 gap-2 text-center mb-2 text-base font-bold">
+          <div *ngFor="let d of weekDays">{{ d }}</div>
+        </div>
+
+        <!-- Grid de días -->
+        <div class="grid grid-cols-7 gap-2">
+          <button *ngFor="let day of calendarDays"
+                  type="button"
+                  (click)="selectDateFromCalendar(day)"
+                  [disabled]="!day.isCurrentMonth || day.status === 'none'"
+                  [attr.aria-disabled]="(!day.isCurrentMonth || day.status === 'none')"
+                  class="h-16 md:h-20 rounded-lg flex flex-col items-center justify-center text-base md:text-lg transition transform hover:scale-105 focus:outline-none"
+                  [ngClass]="{
+                    'opacity-40 cursor-not-allowed': !day.isCurrentMonth || day.status === 'none',
+                    'bg-[#2b2b2b] text-white': isSelectedDay(day),
+                    'ring-2 ring-ocre': isSelectedDay(day) && day.status !== 'none',
+                    'bg-emerald-600 text-white': day.status === 'many' && !isSelectedDay(day),
+                    'bg-amber-700 text-white': day.status === 'few' && !isSelectedDay(day),
+                    'bg-rose-600 text-white': day.status === 'none' && day.isCurrentMonth,
+                    'bg-white/5 text-[#f5e9cf]': day.status === 'available' && !isSelectedDay(day)
+                  }"
+                  [title]="day.isCurrentMonth ? (day.status === 'many' ? 'Muchas franjas disponibles' : day.status === 'few' ? 'Pocas franjas disponibles' : (day.status === 'none' ? 'Sin franjas' : 'Disponible')) : ''">
+            <div class="font-semibold text-xl md:text-2xl">
+              {{ day.dateNum }}
+            </div>
+          </button>
+        </div>
+
+        <!-- Leyenda -->
+        <div class="mt-4 flex items-center justify-center gap-6 text-base">
+          <div class="flex items-center gap-2"><span class="w-3 h-3 bg-emerald-600 rounded-sm inline-block"></span> Muchas</div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 bg-amber-500 rounded-sm inline-block"></span> Pocas</div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 bg-rose-600 rounded-sm inline-block"></span> Ninguna</div>
+        </div>
+
+      </div>
+    </div>
+
+
+        <!-- Input date oculto (seguimos manteniendo el input para compatibilidad/formControl) -->
+        <input id="date" formControlName="date" name="date" type="date" class="hidden" />
+        <p class="mt-2 italic font-bold text-xl text-white">Selecciona una fecha en el calendario arriba.</p>
+
+      <!-- Hora -->
+      <div>
+        <label for="time" class="block mb-2 font-bold text-2xl">Hora</label>
+        <select id="time" formControlName="time" name="time" required class="w-full rounded-md p-3 text-2xl text-[#0b1e3a]">
+          <option value="">Elige una fecha y servicio</option>
+          <option *ngFor="let slot of slots" [value]="slot">{{ slot }}</option>
+        </select>
+
+        <p *ngIf="slots.length === 0" class="text-lg italic mt-1 text-white">No hay franjas disponibles para la fecha/servicio seleccionado.</p>
+      </div>
+
+      <!-- Nombre -->
+      <div>
+        <label for="name" class="block mb-2 font-bold text-2xl">Nombre completo</label>
+        <input id="name" name="name" formControlName="name" type="text" required minlength="2" class="w-full rounded-md p-3 text-2xl text-[#0b1e3a]" />
+        <p *ngIf="form.get('name')?.touched && form.get('name')?.invalid" class="text-red-400 text-lg italic mt-1 font-bold"> Debes introducir tu nombre completo.</p>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" class="block mb-2 font-bold text-2xl">Email</label>
+        <input id="email" name="email" formControlName="email" type="email" required class="w-full rounded-md p-3 text-2xl text-[#0b1e3a]" />
+        <p *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-red-400 text-lg italic mt-1 font-bold"> Debes introducir tu correo electrónico.</p>
+      </div>
+
+      <!-- Teléfono -->
+      <div>
+        <label for="phone" class="block mb-2 font-bold text-2xl">Teléfono</label>
+        <input id="phone" name="phone" formControlName="phone" type="tel" required class="w-full rounded-md p-3 text-2xl text-[#0b1e3a]" />
+        <p *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid" class="text-red-400 text-lg italic mt-1 font-bold"> Debes introducir tu teléfono.</p>
+      </div>
+
+      <!-- Subir referencia -->
+      <div>
+        <label for="reference" class="block mb-2 font-bold text-2xl">Sube imagen o referencia (opcional)</label>
+        <input id="reference" name="reference" type="file" (change)="onFileSelected($event)" accept="image/*,application/pdf" class="w-full rounded-md p-3 text-2xl bg-white/10 text-[#f5e9cf]" />
+      </div>
+
+      <!-- Aceptaciones -->
+      <div class="flex items-start gap-3 font-bold">
+        <input id="privacy" name="privacy" formControlName="privacy" type="checkbox" required class="mt-1 scale-125" />
+        <label for="privacy" class="text-xl">
+          Acepto la <a href="/politica-privacidad" class="underline text-ocre">política de privacidad</a>.
+        </label>
+        <p *ngIf="form.get('privacy')?.touched && form.get('privacy')?.invalid" class="text-red-400 text-lg italic mt-1 font-bold"> Debes aceptar la política de privacidad.</p>
+      </div>
+
+      <div class="flex items-start gap-3 font-bold">
+        <input id="policy" name="policy" formControlName="policy" type="checkbox" required class="mt-1 scale-125" />
+        <label for="policy" class="text-xl">
+          Acepto la política de cancelación y depósito de fianza (mín. 20€).
+        </label>
+        <p *ngIf="form.get('policy')?.touched && form.get('policy')?.invalid" class="text-red-400 text-lg italic mt-1 font-bold"> Debes aceptar la política de cancelación.</p>
+      </div>
+
+      <!-- Fianza + botón -->
+      <div class="flex items-center justify-between gap-4 font-bold">
+        <p class="text-xl">Fianza mínima: <strong class="text-white text-2xl">20€</strong></p>
+
+        <button id="submitBtn" type="submit"
+          class="bg-ocre text-[#0b1e3a] px-6 py-3 rounded-md font-semibold text-2xl shadow hover:brightness-95">
+          Reservar y pagar fianza
+        </button>
+      </div>
+
+      <div id="formMsg" role="status" class="sr-only"></div>
+
+    </form>
+  </div>
 </section>

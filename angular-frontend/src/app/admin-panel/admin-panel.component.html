@@ -1,0 +1,189 @@
+<div class="min-h-screen p-6" style="background:#0b2440; color: #efe6d6;">
+  <div class="max-w-6xl mx-auto">
+    <header class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-semibold text-ocre">Panel de administrador</h1>
+      <div class="flex items-center gap-3">
+        <button *ngIf="subPage !== 'home'" (click)="goToHome()" class="px-3 py-1 rounded border border-ocre/30">← Home</button>
+        <nav class="flex gap-3">
+          <button (click)="selectTab('portfolio')" [class.opacity-90]="tab==='portfolio'"
+            class="px-3 py-1 rounded-md border border-ocre/30">Portfolio</button>
+          <button (click)="selectTab('reservas')" [class.opacity-90]="tab==='reservas'"
+            class="px-3 py-1 rounded-md border border-ocre/30">Reservas</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HOME -->
+    <section *ngIf="subPage === 'home'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="p-6 rounded-2xl bg-[rgba(255,255,255,0.02)] shadow-md">
+        <h2 class="text-xl font-medium mb-3">Gestionar Portfolio</h2>
+        <p class="text-sm mb-4">Añade, edita o elimina trabajos del portfolio.</p>
+        <div class="flex gap-3">
+          <button (click)="goToPortfolio()" class="px-4 py-2 rounded border border-ocre/30">Ir a Portfolio</button>
+        </div>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-[rgba(255,255,255,0.02)] shadow-md">
+        <h2 class="text-xl font-medium mb-3">Gestionar Reservas</h2>
+        <p class="text-sm mb-4">Consulta, confirma o cancela reservas.</p>
+        <div class="flex gap-3">
+          <button (click)="goToReservas()" class="px-4 py-2 rounded border border-ocre/30">Ir a Reservas</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section *ngIf="subPage === 'portfolio'" class="mt-4 bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl shadow-md">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-medium">Gestionar Portfolio</h2>
+        <div class="flex items-center gap-3">
+          <div class="text-sm text-ocre/60 mr-4">{{ portfolioItems.length }} items</div>
+
+          <!-- BOTON GUARDAR TODO -->
+          <button (click)="saveAll()" [disabled]="savingAll"
+            class="px-3 py-1 rounded bg-ocre/90 text-blue-900 disabled:opacity-50">
+            <span *ngIf="!savingAll">Guardar todo</span>
+            <span *ngIf="savingAll">Guardando…</span>
+          </button>
+
+          <!-- BOTON VOLVER (específico para portfolio) -->
+          <button (click)="goBackFromPortfolio()" class="px-3 py-1 rounded border border-ocre/30">Volver</button>
+        </div>
+      </div>
+
+      <!-- PREVIEW: 3 DESTACADAS -->
+      <div class="mb-6">
+        <h3 class="text-lg mb-3">Vista previa — 3 destacadas</h3>
+        <div class="flex justify-center gap-6">
+          <ng-container *ngFor="let pos of featuredPositions">
+            <div class="w-full max-w-[360px]">
+              <div class="relative rounded-2xl overflow-hidden shadow-lg bg-neutral-800 h-[320px] flex items-center justify-center">
+                <img [src]="getSlotImage(pos)" alt="slot" class="w-full h-full object-cover" />
+                <div class="absolute left-3 top-3 flex gap-2">
+                  <label class="bg-ocre/90 text-blue-900 px-3 py-1 rounded cursor-pointer text-sm">Cambiar
+                    <input type="file" (change)="onFileForSlot($event, pos)" accept="image/*" class="hidden" />
+                  </label>
+                  <button (click)="clearSlotImage(pos)" class="bg-[rgba(0,0,0,0.5)] px-3 py-1 rounded text-sm">Borrar</button>
+                </div>
+                <div class="absolute left-3 bottom-3 right-3 bg-[rgba(0,0,0,0.45)] p-3 rounded">
+                  <input [(ngModel)]="slotEdits[pos].title" placeholder="Título" class="w-full mb-2 p-2 rounded bg-[rgba(255,255,255,0.02)] border border-ocre/20 text-sm"/>
+                  <textarea [(ngModel)]="slotEdits[pos].description" placeholder="Descripción" class="w-full p-2 rounded bg-[rgba(255,255,255,0.02)] border border-ocre/20 text-sm"></textarea>
+                  <!-- Eliminado botón guardar individual: ahora se usa "Guardar todo" -->
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- PREVIEW: GALERÍA 3x5 -->
+      <div class="mb-4">
+        <h3 class="text-lg mb-3">Vista previa — galería (3 filas × 5 columnas)</h3>
+        <div class="grid grid-cols-5 gap-3">
+          <ng-container *ngFor="let pos of galleryPositions">
+            <div class="relative rounded overflow-hidden bg-neutral-800 h-40 flex items-center justify-center">
+              <img [src]="getSlotImage(pos)" alt="slot" class="w-full h-full object-cover" />
+              <div class="absolute inset-0 flex flex-col justify-between p-2">
+                <div class="flex justify-between">
+                  <label class="bg-ocre/90 text-blue-900 px-2 py-1 rounded text-xs cursor-pointer">Cambiar
+                    <input type="file" (change)="onFileForSlot($event, pos)" accept="image/*" class="hidden" />
+                  </label>
+                  <button (click)="clearSlotImage(pos)" class="bg-[rgba(0,0,0,0.45)] px-2 py-1 rounded text-xs">Borrar</button>
+                </div>
+                <div class="bg-[rgba(0,0,0,0.45)] p-2 rounded text-xs">
+                  <input [(ngModel)]="slotEdits[pos].title" placeholder="Título" class="w-full mb-1 p-1 rounded bg-[rgba(255,255,255,0.02)] border border-ocre/10 text-xs"/>
+                  <div class="flex gap-2 justify-end">
+                    <!-- Eliminado botón guardar individual: ahora se usa "Guardar todo" -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- LISTADO -->
+      <div class="mt-6">
+        <h4 class="text-md mb-3">Items del portfolio (lista)</h4>
+        <div *ngIf="loadingPortfolio" class="py-6 text-center">Cargando portfolio...</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" *ngIf="!loadingPortfolio">
+          <div *ngFor="let item of portfolioItems" class="p-4 rounded border border-ocre/10 bg-[rgba(255,255,255,0.01)]">
+            <div class="h-40 mb-3 overflow-hidden rounded bg-neutral-800">
+              <img [src]="item.image" alt="item" class="w-full h-full object-cover" />
+            </div>
+            <h5 class="font-semibold">{{ item.title }}</h5>
+            <p class="text-sm mb-3">{{ item.description | slice:0:90 }}{{ ((item.description?.length ?? 0) > 90) ? '...' : '' }}</p>
+            <div class="flex gap-2">
+              <button (click)="deletePortfolioItem(item)" class="px-3 py-1 rounded border">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESERVAS -->
+    <section *ngIf="subPage === 'reservas'" class="mt-4 bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl shadow-md">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-medium">Gestión de reservas</h2>
+        <div class="flex items-center gap-3">
+          <div class="text-sm text-ocre/60">{{ reservations.length }} reservas</div>
+
+          <!-- BOTON GUARDAR TODO (opcional para reservas si hay cambios en lote) -->
+          <button *ngIf="reservasHaveBatchChanges" (click)="saveAllReservations()" [disabled]="savingAllReservations"
+            class="px-3 py-1 rounded bg-ocre/90 text-blue-900 disabled:opacity-50">
+            <span *ngIf="!savingAllReservations">Guardar cambios</span>
+            <span *ngIf="savingAllReservations">Guardando…</span>
+          </button>
+
+          <!-- BOTON VOLVER (específico para reservas) -->
+          <button (click)="goBackFromReservas()" class="px-3 py-1 rounded border border-ocre/30">Volver</button>
+        </div>
+      </div>
+
+      <div class="flex gap-3 items-center mb-4">
+        <input [(ngModel)]="reservasFilter" (ngModelChange)="applyFilter()" placeholder="Buscar por nombre o email"
+          class="p-2 rounded w-64 bg-[rgba(255,255,255,0.02)] border border-ocre/10" />
+
+        <select [(ngModel)]="filterStatus" (change)="applyFilter()"
+          class="p-2 rounded bg-[rgba(255,255,255,0.02)] border border-ocre/10">
+          <option value="">Todos</option>
+          <option value="pending">Pendiente</option>
+          <option value="confirmed">Confirmada</option>
+          <option value="cancelled">Cancelada</option>
+        </select>
+
+        <button (click)="loadReservations()" class="px-3 py-1 rounded border">Recargar</button>
+      </div>
+
+      <div *ngIf="loadingReservations" class="py-6 text-center">Cargando reservas...</div>
+
+      <div class="overflow-x-auto" *ngIf="!loadingReservations">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="text-sm text-ocre/90">
+              <th class="p-2">Fecha</th>
+              <th class="p-2">Nombre</th>
+              <th class="p-2">Serv.</th>
+              <th class="p-2">Estado</th>
+              <th class="p-2">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of filteredReservations" class="border-t border-ocre/8 align-top">
+              <td class="p-2 text-sm">{{ r.date | date:'medium' }}</td>
+              <td class="p-2 text-sm">{{ r.name }}<div class="text-xs text-ocre/60">{{ r.email }}</div></td>
+              <td class="p-2 text-sm">{{ r.service }}</td>
+              <td class="p-2 text-sm">{{ r.status }}</td>
+              <td class="p-2 text-sm flex gap-2">
+                <button (click)="confirmReservation(r)" [disabled]="r.status==='confirmed'" class="px-2 py-1 rounded border">Confirmar</button>
+                <button (click)="cancelReservation(r)" [disabled]="r.status==='cancelled'" class="px-2 py-1 rounded border">Cancelar</button>
+                <button (click)="openReservationDetails(r)" class="px-2 py-1 rounded border">Ver</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+  </div>
+</div>

@@ -8,6 +8,8 @@ services:
     working_dir: /var/www/app
     volumes:
       - ./symfony-backend:/var/www/app
+    env_file:
+      - ./symfony-backend/.env
     depends_on:
       db:
         condition: service_healthy
@@ -20,7 +22,7 @@ services:
         done;
         
         if [ ! -f /var/www/app/vendor/autoload.php ]; then
-          composer install;
+          composer install --no-interaction --prefer-dist;
         fi
         
         php bin/console doctrine:database:create --if-not-exists;
@@ -33,6 +35,29 @@ services:
         symfony server:start --no-tls --port=8000 --allow-all-ip;
       "
 
+  messenger-worker:
+    build:
+      context: ./symfony-backend
+      dockerfile: ./docker/php/Dockerfile
+    container_name: symfony_messenger_worker
+    restart: unless-stopped
+    working_dir: /var/www/app
+    volumes:
+      - ./symfony-backend:/var/www/app
+    env_file:
+      - ./symfony-backend/.env
+    depends_on:
+      db:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    command: >
+      bash -lc "
+        until pg_isready -h db -U symfony -d symfony_db; do
+          sleep 2;
+        done;
+        php bin/console messenger:consume async --sleep=10 --memory-limit=512M --no-interaction -vv
+      "
 
   db:
     image: postgres:13
@@ -66,7 +91,6 @@ services:
     ports:
       - "4200:4200"
     command: ["sh", "-c", "npm install && ng serve --host 0.0.0.0 --poll 2000 --watch"]
-
 
 volumes:
   pgdata:

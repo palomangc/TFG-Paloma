@@ -1,12 +1,28 @@
-import { Component } from '@angular/core';
+// src/app/app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterModule, CommonModule],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+
+// NOTA: NO incluir ni declarar AppComponent porque es standalone.
+// Este módulo sirve para agrupar componentes no-standalone y módulos (HttpClientModule, FormsModule...).
+
+@NgModule({
+  declarations: [
+  ],
+  imports: [
+    BrowserModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    RouterModule.forRoot([
+      { path: 'admin', component: AdminPanelComponent },
+    ])
+  ],
+  providers: []
 })
-class AppModule {}
+export class AppModule {}
