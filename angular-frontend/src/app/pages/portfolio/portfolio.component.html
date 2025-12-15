@@ -1,25 +1,22 @@
 <section id="portfolio" class="scroll-mt-[72px] w-full bg-[oklch(28%_0.146_265.522)] font-cinzel">
-  <div class="max-w-6xl mx-auto pt-8 pb-20">
+  <div class="max-w-6xl mx-auto pt-8 pb-20 px-4 sm:px-6 md:px-0">
 
     <!-- TITULO + LAUREL -->
     <div class="text-center">
-      <h2 class="text-5xl md:text-6xl font-romano text-ocre tracking-[0.08em]">
+      <h2 class="text-4xl md:text-6xl font-romano text-ocre tracking-[0.08em] mb-2 md:mb-0">
         Portfolio
       </h2>
       <img src="/assets/laurel.webp"
            alt="ornamento de laurel"
-           class="mx-auto w-[300px] opacity-95 -mt-16 translate-x-[8px]" />
+           class="mx-auto w-[220px] md:w-[300px] opacity-95 -mt-12 translate-x-[8px]" />
     </div>
 
     <!-- DESTACADAS -->
-    <div class="flex flex-col md:flex-row justify-center items-stretch gap-6 mb-8">
+    <div class="flex flex-col md:flex-row justify-center items-stretch gap-6 mb-8 px-0 sm:px-4 md:px-0">
       <ng-container *ngFor="let pos of [1,2,3]; let i = index">
-        <!-- .group permite hover en el contenedor afectando la imagen -->
-        <div class="border-2 border-[#d6a93a] box-border group w-full max-w-[420px] md:max-w-[34rem] rounded-2xl overflow-hidden shadow-lg cursor-pointer transform-gpu hover:scale-[1.06] transition-all duration-300 ease-out hover:shadow-2xl"
-        (click)="open(i)" 
-        >
-          <!-- wrapper con ratio más vertical: usamos alturas responsivas -->
-          <div class="w-full h-[420px] md:h-[520px] lg:h-[600px] bg-neutral-900 overflow-hidden">
+        <div class="border-2 border-[#d6a93a] box-border group w-full max-w-full md:max-w-[34rem] rounded-2xl overflow-hidden shadow-lg cursor-pointer transform-gpu hover:scale-[1.06] transition-all duration-300 ease-out hover:shadow-2xl"
+        (click)="open(i)">
+          <div class="w-full h-[300px] sm:h-[420px] md:h-[520px] lg:h-[600px] bg-neutral-900 overflow-hidden">
             <img
               [src]="getImageByPosition(pos)"
               alt="destacada"
@@ -31,79 +28,62 @@
     </div>
 
     <!-- GALERÍA -->
-<div
-  class="w-screen relative left-1/2 right-1/2 -translate-x-1/2
-         grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5
-         px-4 sm:px-6 md:px-8 lg:px-16">
-
-  <ng-container *ngFor="let pos of galleryPositions; let i = index">
-    <div
-      class="border-2 border-[#d6a93a] box-border group rounded-xl overflow-hidden bg-neutral-900
-      h-[360px] sm:h-[420px] md:h-[460px] lg:h-[500px]
-      cursor-pointer transform-gpu hover:scale-[1.06] transition-all duration-300 ease-out hover:shadow-2xl"
-      (click)="openExtra(i)"
-    >
-      <img
-        [src]="getImageByPosition(pos)"
-        alt="gallery"
-        class="w-full h-full object-cover transform transition-transform duration-500 ease-out"
-      />
+    <div class="w-screen relative left-1/2 right-1/2 -translate-x-1/2
+                grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5
+                px-4 sm:px-6 md:px-8 lg:px-16">
+      <ng-container *ngFor="let pos of galleryPositions; let i = index">
+        <div
+          class="border-2 border-[#d6a93a] box-border group rounded-xl overflow-hidden bg-neutral-900
+                 h-[240px] sm:h-[360px] md:h-[460px] lg:h-[500px]
+                 cursor-pointer transform-gpu hover:scale-[1.06] transition-all duration-300 ease-out hover:shadow-2xl"
+          (click)="openExtra(i)">
+          <img
+            [src]="getImageByPosition(pos)"
+            alt="gallery"
+            class="w-full h-full object-cover transform transition-transform duration-500 ease-out"
+          />
+        </div>
+      </ng-container>
     </div>
-  </ng-container>
 
-</div>
-</div>
+  </div>
 
   <!-- LIGHTBOX / MODAL  -->
-<div
-  class="bg-black/60 fixed inset-0 z-50 flex items-center justify-center p-6"
-  *ngIf="lightboxOpen"
-  (click)="onBackdropClick($event)"
-  (touchstart)="onTouchStart($event)"          
-  (touchend)="onTouchEnd($event)"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Visor de imágenes">
-
-  <!-- Fondo del modal: mismo azul marino principal de la página -->
   <div
-    class="mt-auto relative w-full max-w-[1100px] mx-auto z-10"
-    (click)="$event.stopPropagation()"
-    tabindex="0">
-    <!-- Close -->
-    <button
-      (click)="close()"
-      class="absolute right-4 top-4 z-30 p-3 rounded-md shadow-lg bg-ocre text-[oklch(28%_0.146_265.522)] hover:brightness-95 ring-2 ring-[rgba(0,0,0,0.08)]"
-      aria-label="Cerrar galería">
-      ✕
-    </button>
+    class="bg-black/60 fixed inset-0 z-50 flex items-center justify-center p-6"
+    *ngIf="lightboxOpen"
+    (click)="onBackdropClick($event)"
+    (touchstart)="onTouchStart($event)"          
+    (touchend)="onTouchEnd($event)"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Visor de imágenes">
 
-    <!-- Image container -->
-    <div class="bg-blue-950/90 pt-6 rounded-2xl overflow-hidden shadow-2xl relative border border-ocre/20">
-      <img
-        [src]="currentImage.src"
-        [alt]="currentImage.alt"
-        class="w-full max-h-[80vh] object-contain bg-transparent select-none" />
-
-      <div class="p-4 text-sm text-ocre/90">{{ currentImage.caption }}</div>
-
-      <!-- Prev / Next dentro del modal -->
+    <div class="mt-auto relative w-full max-w-[1100px] mx-auto z-10" (click)="$event.stopPropagation()" tabindex="0">
       <button
-        *ngIf="hasPrev()"
-        (click)="prev()"
-        class="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full p-3 shadow-lg bg-ocre text-[oklch(28%_0.146_265.522)] ring-2 ring-[rgba(0,0,0,0.06)] focus:outline-none hover:brightness-95"
-        aria-label="Anterior">
-        ‹
-      </button>
+        (click)="close()"
+        class="absolute right-4 top-4 z-30 p-3 rounded-md shadow-lg bg-ocre text-[oklch(28%_0.146_265.522)] hover:brightness-95 ring-2 ring-[rgba(0,0,0,0.08)]"
+        aria-label="Cerrar galería">✕</button>
 
-      <button
-        *ngIf="hasNext()"
-        (click)="next()"
-        class="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full p-3 shadow-lg bg-ocre text-[oklch(28%_0.146_265.522)] ring-2 ring-[rgba(0,0,0,0.06)] focus:outline-none hover:brightness-95"
-        aria-label="Siguiente">
-        ›
-      </button>
+      <div class="bg-blue-950/90 pt-6 rounded-2xl overflow-hidden shadow-2xl relative border border-ocre/20">
+        <img
+          [src]="currentImage.src"
+          [alt]="currentImage.alt"
+          class="w-full max-h-[80vh] object-contain bg-transparent select-none" />
+        <div class="p-4 text-sm text-ocre/90">{{ currentImage.caption }}</div>
+
+        <button
+          *ngIf="hasPrev()"
+          (click)="prev()"
+          class="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full p-3 shadow-lg bg-ocre text-[oklch(28%_0.146_265.522)] ring-2 ring-[rgba(0,0,0,0.06)] focus:outline-none hover:brightness-95"
+          aria-label="Anterior">‹</button>
+
+        <button
+          *ngIf="hasNext()"
+          (click)="next()"
+          class="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full p-3 shadow-lg bg-ocre text-[oklch(28%_0.146_265.522)] ring-2 ring-[rgba(0,0,0,0.06)] focus:outline-none hover:brightness-95"
+          aria-label="Siguiente">›</button>
+      </div>
     </div>
   </div>
-</div>
 </section>
