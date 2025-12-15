@@ -17,6 +17,13 @@ export class ReservasComponent implements OnInit {
   message = '';
   selectedFile: File | null = null;
 
+  // NUEVAS VARIABLES PARA EL LOADING TEMPORAL
+  enviado = false;            // controla el mensaje "¡Enviado correctamente!"
+  loadingTemp = false;        // controla el mensaje "Enviando..."
+  hideButton = false;         // controla si se oculta el botón
+  loadingTempDuration = 2000; // duración del mensaje "Enviando..."
+  showButtonDelay = 3000;  
+
   calendarDays: Array<{
     date: Date,
     dateNum: number,
@@ -150,97 +157,82 @@ export class ReservasComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      this.message = 'Revisa los campos del formulario.';
-      return;
-    }
-
-    const formData = new FormData();
-
-    Object.entries(this.form.value).forEach(([key, value]) => {
-      const safeValue = typeof value === 'boolean' ? String(value) : value;
-      formData.append(key, safeValue as any);
-    });
-
-    if (this.selectedFile) {
-      formData.append('reference', this.selectedFile);
-    }
-
-    interface ReservationResponse {
-      payUrl?: string;
-      message?: string;
-    }
-
-    this.loading = true;
-    this.message = '';
-
-    const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement | null;
-    if (submitBtn) submitBtn.disabled = true;
-
-    this.http.post<ReservationResponse>('http://localhost:8000/api/reservations', formData)
-      .pipe(finalize(() => {
-        this.loading = false;
-        if (submitBtn) submitBtn.disabled = false;
-      }))
-      .subscribe({
-        next: (res) => {
-          if (res.payUrl) {
-            window.location.href = res.payUrl;
-            return;
-          }
-
-          this.message = res.message ?? 'Reserva creada correctamente. Espera confirmación del estudio.';
-
-          this.form.reset({
-            service: 'standard',
-            date: '',
-            time: '',
-            name: '',
-            email: '',
-            phone: '',
-            privacy: false,
-            policy: false
-          });
-
-          this.selectedFile = null;
-          this.slots = [];
-          this.form.get('time')?.disable();
-
-          const formMsg = document.getElementById('formMsg');
-          if (formMsg) {
-            formMsg.classList.remove('sr-only');
-            formMsg.textContent = this.message;
-          }
-        },
-
-        error: (err: any) => {
-          let serverMsg: string | undefined;
-
-          if (err?.error) {
-            if (typeof err.error === 'string') serverMsg = err.error;
-            else if (typeof err.error === 'object') serverMsg = err.error.message || err.error.error || JSON.stringify(err.error);
-          }
-
-          serverMsg = serverMsg ?? err?.message ?? 'Error al crear la reserva.';
-
-          if (err?.status === 409) {
-            this.message = serverMsg || 'La franja seleccionada ya no está disponible. Por favor, elige otra hora.';
-            this.loadSlots();
-          } else if (err?.status === 400) {
-            this.message = serverMsg || 'Datos inválidos. Revisa el formulario.';
-          } else {
-            this.message = serverMsg || 'Error al crear la reserva. Intenta de nuevo más tarde.';
-          }
-
-          const formMsg = document.getElementById('formMsg');
-          if (formMsg) {
-            formMsg.classList.remove('sr-only');
-            formMsg.textContent = this.message;
-          }
-        }
-      });
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    this.message = 'Revisa los campos del formulario.';
+    return;
   }
+
+  // Activamos el loading temporal y ocultamos el botón
+  this.loadingTemp = true;
+  this.enviado = false;
+  this.hideButton = true;
+
+  // Primer timeout: "Enviando..."
+  setTimeout(() => {
+    this.loadingTemp = false;
+    this.enviado = true; // mostramos mensaje de enviado correctamente
+
+    // Segundo timeout: mostramos el botón de nuevo tras X segundos
+    setTimeout(() => {
+      this.enviado = false;
+      this.hideButton = false;
+    }, this.showButtonDelay);
+
+  }, this.loadingTempDuration);
+
+  // Preparar datos para enviar al servidor
+  const formData = new FormData();
+  Object.entries(this.form.value).forEach(([key, value]) => {
+    const safeValue = typeof value === 'boolean' ? String(value) : value;
+    formData.append(key, safeValue as any);
+  });
+
+  if (this.selectedFile) {
+    formData.append('reference', this.selectedFile);
+  }
+
+  this.loading = true;
+  this.message = '';
+
+  const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement | null;
+  if (submitBtn) submitBtn.disabled = true;
+
+  this.http.post('http://localhost:8000/api/reservations', formData)
+    .pipe(finalize(() => {
+      this.loading = false;
+      if (submitBtn) submitBtn.disabled = false;
+    }))
+    .subscribe({
+      next: (res: any) => {
+        // Si hay URL de pago
+        if (res?.payUrl) {
+          window.location.href = res.payUrl;
+          return;
+        }
+
+        // Reset form
+        this.form.reset({
+          service: 'standard',
+          date: '',
+          time: '',
+          name: '',
+          email: '',
+          phone: '',
+          privacy: false,
+          policy: false
+        });
+        this.selectedFile = null;
+        this.slots = [];
+        this.form.get('time')?.disable();
+      },
+      error: (err: any) => {
+        if (err?.status === 409) {
+          this.loadSlots();
+        }
+      }
+    });
+}
 
   buildCalendar(year: number, month: number) {
     const firstOfMonth = new Date(year, month, 1);
@@ -275,7 +267,6 @@ export class ReservasComponent implements OnInit {
     }
 
     this.calendarDays = days;
-
     this.fetchMonthAvailability(year, month);
   }
 
