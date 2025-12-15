@@ -43,13 +43,15 @@
           <small *ngIf="form.controls['mensaje'].touched && form.controls['mensaje'].invalid" class="text-base text-[#d66b6b] mt-2">Escribe al menos 10 caracteres.</small>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center gap-4 mt-4">
-          <button type="submit" [disabled]="cargando"
+        <div class="flex flex-col sm:flex-row items-center sm:justify-end gap-4 mt-4">
+          <button *ngIf="!hideButton" type="submit" [disabled]="cargando"
                   class="py-3 px-6 rounded-[1rem] border-2 border-[#d6a93a] bg-[#d6a93a] text-[#031226] font-cinzel font-bold uppercase text-xl cursor-pointer disabled:opacity-50">
             {{ cargando ? 'Enviando...' : 'Enviar mensaje' }}
           </button>
           <p *ngIf="enviado" class="text-[#d6a93a] font-bold font-cinzel text-xl">¡Mensaje enviado correctamente!</p>
         </div>
+
+
 
       </form>
     </div>
