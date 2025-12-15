@@ -1,46 +1,51 @@
 <section id="contacto" class="scroll-mt-[72px] w-full bg-[oklch(28%_0.146_265.522)] font-cinzel">
-  <div class="max-w-6xl mx-auto pt-16 pb-20">
+  <div class="max-w-6xl mx-auto pt-16 pb-20 px-4 sm:px-6 md:px-0">
 
     <!-- TITULO + LAUREL -->
     <div class="text-center">
-      <h2 class="text-5xl md:text-6xl font-cinzel text-ocre tracking-[0.08em]">
+      <h2 class="text-4xl md:text-6xl font-cinzel text-ocre tracking-[0.08em] mb-2 md:mb-0">
         Contacto
       </h2>
       <img src="/assets/laurel.webp"
            alt="ornamento de laurel"
-           class="mx-auto w-[300px] opacity-95 -mt-16 translate-x-[8px]" />
+           class="mx-auto w-[220px] md:w-[300px] opacity-95 -mt-12 translate-x-[8px]" />
     </div>
 
-    <div class="font-cinzel max-w-[900px] mx-auto p-10 rounded-2xl bg-blue-950 border-2 border-[#d6a93a] box-border text-[#d6a93a]">
+    <div class="font-cinzel max-w-full md:max-w-[900px] mx-auto p-6 sm:p-10 rounded-2xl bg-blue-950 border-2 border-[#d6a93a] box-border text-[#d6a93a]">
       <h2 class="mb-6 text-center text-2xl md:text-3xl text-[#d6a93a]">Ponte en contacto con nosotros</h2>
 
       <form [formGroup]="form" (ngSubmit)="enviar()" novalidate class="grid gap-6">
 
         <div class="campo flex flex-col">
           <label for="nombre" class="text-[#d6a93a] font-semibold text-xl">Nombre *</label>
-          <input id="nombre" type="text" formControlName="nombre" class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel" />
+          <input id="nombre" type="text" formControlName="nombre"
+                 class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel" />
           <small *ngIf="form.controls['nombre'].touched && form.controls['nombre'].invalid" class="text-base text-[#d66b6b] mt-2">El nombre es obligatorio.</small>
         </div>
 
         <div class="campo flex flex-col">
           <label for="email" class="text-[#d6a93a] font-semibold text-xl">Correo electrónico *</label>
-          <input id="email" type="email" formControlName="email" class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel" />
+          <input id="email" type="email" formControlName="email"
+                 class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel" />
           <small *ngIf="form.controls['email'].touched && form.controls['email'].invalid" class="text-base text-[#d66b6b] mt-2">Introduce un correo válido.</small>
         </div>
 
         <div class="campo flex flex-col">
           <label for="telefono" class="text-[#d6a93a] font-semibold text-xl">Teléfono</label>
-          <input id="telefono" type="text" formControlName="telefono" class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel" />
+          <input id="telefono" type="text" formControlName="telefono"
+                 class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel" />
         </div>
 
         <div class="campo flex flex-col">
           <label for="mensaje" class="text-[#d6a93a] font-semibold text-xl">Mensaje *</label>
-          <textarea id="mensaje" rows="5" formControlName="mensaje" class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel"></textarea>
+          <textarea id="mensaje" rows="5" formControlName="mensaje"
+                    class="py-3 px-4 border-2 border-[#d6a93a] rounded-[0.75rem] bg-white text-[#d6a93a] text-2xl w-full box-border font-cinzel"></textarea>
           <small *ngIf="form.controls['mensaje'].touched && form.controls['mensaje'].invalid" class="text-base text-[#d66b6b] mt-2">Escribe al menos 10 caracteres.</small>
         </div>
 
-        <div class="flex items-center gap-4 mt-4">
-          <button type="submit" [disabled]="cargando" class="py-3 px-6 rounded-[1rem] border-2 border-[#d6a93a] bg-[#d6a93a] text-[#031226] font-cinzel font-bold uppercase text-xl cursor-pointer disabled:opacity-50">
+        <div class="flex flex-col sm:flex-row items-center gap-4 mt-4">
+          <button type="submit" [disabled]="cargando"
+                  class="py-3 px-6 rounded-[1rem] border-2 border-[#d6a93a] bg-[#d6a93a] text-[#031226] font-cinzel font-bold uppercase text-xl cursor-pointer disabled:opacity-50">
             {{ cargando ? 'Enviando...' : 'Enviar mensaje' }}
           </button>
           <p *ngIf="enviado" class="text-[#d6a93a] font-bold font-cinzel text-xl">¡Mensaje enviado correctamente!</p>

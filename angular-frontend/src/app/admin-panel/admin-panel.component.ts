@@ -16,6 +16,25 @@ export class AdminPanelComponent implements OnInit {
   subPage: 'home' | 'portfolio' | 'reservas' = 'home';
   tab: 'portfolio' | 'reservas' = 'portfolio';
 
+// login
+loginUser = '';
+loginPass = '';
+loggedIn = false;
+
+// credenciales básicas
+private readonly ADMIN_USER = 'admin';
+private readonly ADMIN_PASS = 'password123';
+
+login() {
+  if (this.loginUser === this.ADMIN_USER && this.loginPass === this.ADMIN_PASS) {
+    this.loggedIn = true;
+  } else {
+    alert('Usuario o contraseña incorrectos');
+    this.loginPass = '';
+  }
+}
+
+
   portfolioItems: PortfolioItem[] = [];
   loadingPortfolio = false;
 
