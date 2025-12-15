@@ -22,20 +22,23 @@ export class ContactoComponent {
 
   enviado = false;
   cargando = false;
+  hideButton = false;
 
-  enviar() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+enviar() {
+  if (this.form.invalid) return;
 
-    this.cargando = true;
-    const datos = this.form.value;
+  this.cargando = true;
+
+  // Simulamos el envío
+  setTimeout(() => {
+    this.cargando = false;
+    this.enviado = true;
+    this.hideButton = true;
 
     setTimeout(() => {
-      this.cargando = false;
-      this.enviado = true;
-      this.form.reset();
-    }, 1200);
-  }
+      this.hideButton = false;
+      this.enviado = false;
+    }, 3000); // vuelve a mostrar el botón tras 3 segundos
+  }, 1000); // simulamos tiempo de envío
+}
 }
