@@ -140,18 +140,22 @@
         <p *ngIf="form.get('policy')?.touched && form.get('policy')?.invalid" class="text-red-400 text-lg italic mt-1 font-bold"> Debes aceptar la política de cancelación.</p>
       </div>
 
-      <!-- Fianza + botón -->
+            <!-- Fianza + botón -->
       <div class="flex items-center justify-between gap-4 font-bold">
         <p class="text-xl">Fianza mínima: <strong class="text-white text-2xl">20€</strong></p>
 
-        <button id="submitBtn" type="submit"
-          class="bg-[#d6a93a] text-[#0b1e3a] px-6 py-3 rounded-md font-semibold text-2xl shadow hover:brightness-95">
-          Reservar y pagar fianza
+        <!-- Botón de enviar -->
+        <button *ngIf="!enviado || !hideButton" id="submitBtn" type="submit"
+                [disabled]="loadingTemp || loading"
+                class="bg-[#d6a93a] text-[#0b1e3a] px-6 py-3 rounded-md font-semibold text-2xl shadow hover:brightness-95">
+          {{ loadingTemp ? 'Enviando...' : 'Reservar y pagar fianza' }}
         </button>
+
+        <!-- Mensaje de confirmación -->
+        <p *ngIf="enviado" class="text-[#d6a93a] font-bold text-2xl">
+          ¡Reserva creada correctamente!
+        </p>
       </div>
-
-      <div id="formMsg" role="status" class="sr-only"></div>
-
     </form>
   </div>
 </section>
